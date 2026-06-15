@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data — never commit large CSVs
+data/raw/*.csv
+data/processed/*.csv
+data/exports/*.csv
+data/datamarts/**/*.csv
+
+# Secrets
+.env
+*.env
+credentials.json
+service_account.json
+secrets/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Tests / coverage
+.pytest_cache/
+htmlcov/
+.coverage
+.mypy_cache/

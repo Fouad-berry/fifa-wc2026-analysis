@@ -152,4 +152,6 @@ jupyter lab
 
 ## 📄 License
 
+Réalisé par Fouad MOUTAIROU
+
 MIT

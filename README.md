@@ -153,5 +153,6 @@ jupyter lab
 ## 📄 License
 
 Réalisé par Fouad MOUTAIROU
+Portfolio : https://portfolio-fouad.netlify.app/
 
 MIT

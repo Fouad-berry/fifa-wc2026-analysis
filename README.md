@@ -1,10 +1,10 @@
-# ⚽ FIFA World Cup 2026 — Player Performance Analysis
+# FIFA World Cup 2026 — Player Performance Analysis
 
-End-to-end data analysis pipeline on 54 600 player-match records from the FIFA World Cup 2026, covering 1 248 players across 1 050 matches and 48 nations. Includes a full star-schema data warehouse with 5 datamarts, SQL analytics, and Looker Studio dashboards.
+End-to-end data analysis pipeline on 54,600 player-match records from the FIFA World Cup 2026, covering 1,248 players across 1,050 matches and 48 nations. Includes a full star-schema data warehouse with 5 datamarts, SQL analytics, and Looker Studio dashboards.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 fifa-wc2026-analysis/
@@ -20,15 +20,12 @@ fifa-wc2026-analysis/
 │       ├── dm_stadiums/     stadium_dim.csv        # Stadium dimension
 │       └── dm_performance/  fact_performance.csv   # Central fact table
 │
-├── notebooks/
-│   ├── 01_exploration.ipynb
-│   ├── 02_cleaning.ipynb
-│   └── 03_analysis.ipynb
+├── notebooks/                                      # Jupyter notebooks
 │
 ├── sql/
 │   ├── ddl/
-│   │   ├── create_dimensions.sql
-│   │   └── create_fact.sql
+│   │   ├── create_dimensions.sql                   # DDL for dimension tables
+│   │   └── create_fact.sql                         # DDL for fact table
 │   └── queries/
 │       ├── top_scorers.sql
 │       ├── team_performance.sql
@@ -37,25 +34,27 @@ fifa-wc2026-analysis/
 │       └── tournament_progression.sql
 │
 ├── src/
-│   ├── ingestion/load_data.py
-│   ├── transformation/clean_transform.py
-│   ├── datamarts/build_datamarts.py          # ★ Star-schema builder
-│   └── analysis/metrics.py
+│   ├── __init__.py
+│   ├── logging_config.py                           # Centralised logging setup
+│   ├── paths.py                                    # Centralised path constants
+│   ├── ingestion/load_data.py                      # CSV loader & validator
+│   ├── transformation/clean_transform.py           # Cleaning & feature engineering
+│   ├── datamarts/build_datamarts.py                # Star-schema builder
+│   └── analysis/metrics.py                         # Top-level KPI summary
 │
 ├── looker/
-│   ├── models/fifa_wc2026.model.lkml
-│   ├── views/                                # One view per datamart
-│   ├── explores/fifa_explore.lkml
+│   ├── models/fifa_wc2026.model.lkml               # LookML model placeholder
+│   ├── views/                                      # One view per datamart
+│   ├── explores/
 │   └── dashboards/
-│       ├── player_performance.dashboard.lookml
-│       └── team_overview.dashboard.lookml
 │
 ├── docs/
 │   ├── data_dictionary.md
-│   ├── datamart_architecture.md              # Star schema documentation
+│   ├── datamart_architecture.md
 │   └── looker_setup.md
 │
-├── .github/workflows/ci.yml
+├── .github/workflows/ci.yml                        # CI pipeline
+├── pyproject.toml                                  # Project metadata & tool config
 ├── requirements.txt
 ├── .gitignore
 └── README.md
@@ -63,11 +62,11 @@ fifa-wc2026-analysis/
 
 ---
 
-## 🗂️ Dataset
+## Dataset
 
 **File:** `data/raw/fifa_wc2026_player_performance.csv`
-**Rows:** 54 600 | **Columns:** 75
-**Coverage:** 1 248 players · 1 050 matches · 48 nations · 16 stadiums · 7 tournament stages
+**Rows:** 54,600 | **Columns:** 75
+**Coverage:** 1,248 players / 1,050 matches / 48 nations / 16 stadiums / 7 tournament stages
 
 ### Key column groups
 
@@ -86,17 +85,17 @@ fifa-wc2026-analysis/
 
 ---
 
-## ⭐ Data Architecture — Star Schema
+## Data Architecture — Star Schema
 
 ```
                     ┌──────────────────┐
                     │  dim_players     │
-                    │  (1 248 rows)    │
+                    │  (1,248 rows)    │
                     └────────┬─────────┘
                              │
 ┌──────────────┐    ┌────────▼─────────┐    ┌──────────────────┐
 │  dim_matches │────│  fact_performance│────│   dim_teams      │
-│ (1 050 rows) │    │  (54 600 rows)   │    │   (48 rows)      │
+│ (1,050 rows) │    │  (54,600 rows)   │    │   (48 rows)      │
 └──────────────┘    └────────┬─────────┘    └──────────────────┘
                              │
                     ┌────────▼─────────┐
@@ -107,7 +106,7 @@ fifa-wc2026-analysis/
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 git clone https://github.com/<your-username>/fifa-wc2026-analysis.git
@@ -125,23 +124,23 @@ jupyter lab
 
 ---
 
-## 📊 Looker Studio Dashboards
+## Looker Studio Dashboards
 
 | Dashboard | Key charts |
 |---|---|
-| 🏆 Tournament Overview | Goals per stage, top scorers, match results |
-| 👤 Player Performance | Rating heatmap, top performers by position |
-| 🌍 Team Analysis | Team goals, cards, possession, passing accuracy |
-| 🏟️ Stadium Analysis | Goals per stadium, attendance cities |
-| ⚡ Physical Stats | Speed, distance, stamina by nationality |
+| Tournament Overview | Goals per stage, top scorers, match results |
+| Player Performance | Rating heatmap, top performers by position |
+| Team Analysis | Team goals, cards, possession, passing accuracy |
+| Stadium Analysis | Goals per stadium, attendance cities |
+| Physical Stats | Speed, distance, stamina by nationality |
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Tool |
 |---|---|
-| Language | Python 3.11 |
+| Language | Python 3.12 |
 | Data manipulation | pandas, numpy |
 | Visualisation | matplotlib, seaborn, plotly |
 | SQL | DuckDB (local) / BigQuery (cloud) |
@@ -150,9 +149,9 @@ jupyter lab
 
 ---
 
-## 📄 License
+## License
 
-Réalisé par Fouad MOUTAIROU
+Realise par Fouad MOUTAIROU
 Portfolio : https://portfolio-fouad.netlify.app/
 
 MIT

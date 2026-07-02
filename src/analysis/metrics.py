@@ -5,22 +5,35 @@ Top-level KPI summary printed after the pipeline runs.
 """
 
 import logging
-from pathlib import Path
 
 import pandas as pd
 
-logging.basicConfig(level=logging.INFO, format="%(levelname)s | %(message)s")
-log = logging.getLogger(__name__)
+from src.logging_config import setup_logging
+from src.paths import DM_BASE, PROCESSED_PATH
 
-PROCESSED_PATH = Path(__file__).parents[2] / "data" / "processed" / "wc2026_clean.csv"
-DM_BASE        = Path(__file__).parents[2] / "data" / "datamarts"
+setup_logging()
+log = logging.getLogger(__name__)
 
 
 def run_all() -> None:
-    df        = pd.read_csv(PROCESSED_PATH, parse_dates=["match_date"])
-    players   = pd.read_csv(DM_BASE / "dm_players/player_dim.csv")
-    teams     = pd.read_csv(DM_BASE / "dm_teams/team_dim.csv")
-    stadiums  = pd.read_csv(DM_BASE / "dm_stadiums/stadium_dim.csv")
+    if not PROCESSED_PATH.exists():
+        log.error("Processed file not found at %s", PROCESSED_PATH)
+        print("Run 'python src/transformation/clean_transform.py' first.")
+        return
+
+    df = pd.read_csv(PROCESSED_PATH, parse_dates=["match_date"])
+
+    player_path = DM_BASE / "dm_players/player_dim.csv"
+    team_path = DM_BASE / "dm_teams/team_dim.csv"
+    stadium_path = DM_BASE / "dm_stadiums/stadium_dim.csv"
+
+    if not all(p.exists() for p in [player_path, team_path, stadium_path]):
+        log.error("Datamarts not found. Run 'python src/datamarts/build_datamarts.py' first.")
+        return
+
+    players = pd.read_csv(player_path)
+    teams = pd.read_csv(team_path)
+    stadiums = pd.read_csv(stadium_path)
 
     print("\n" + "=" * 52)
     print("⚽  FIFA WC 2026 — KEY METRICS SUMMARY")
@@ -41,19 +54,20 @@ def run_all() -> None:
     print(f"Avg top speed:             {df['top_speed_kmh'].mean():>9.1f} km/h")
     print()
 
-    top_scorer = (
-        players.sort_values("total_goals_tournament", ascending=False)
-        .iloc[0]
+    top_scorer = players.sort_values("total_goals_tournament", ascending=False).iloc[0]
+    print(
+        f"Top scorer:                {top_scorer['player_name']} ({top_scorer['team']}) "
+        f"— {int(top_scorer['total_goals_tournament'])} goals"
     )
-    print(f"Top scorer:                {top_scorer['player_name']} ({top_scorer['team']}) "
-          f"— {int(top_scorer['total_goals_tournament'])} goals")
 
     top_team = teams.sort_values("total_goals", ascending=False).iloc[0]
     print(f"Most goals (team):         {top_team['team']} — {int(top_team['total_goals'])} goals")
 
     best_stadium = stadiums.sort_values("goals_per_match", ascending=False).iloc[0]
-    print(f"Most goals/match stadium:  {best_stadium['stadium']} "
-          f"({best_stadium['city']}) — {best_stadium['goals_per_match']:.1f} goals/match")
+    print(
+        f"Most goals/match stadium:  {best_stadium['stadium']} "
+        f"({best_stadium['city']}) — {best_stadium['goals_per_match']:.1f} goals/match"
+    )
 
 
 if __name__ == "__main__":

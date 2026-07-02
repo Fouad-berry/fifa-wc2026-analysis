@@ -141,7 +141,11 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
 def save(df: pd.DataFrame) -> None:
     PROCESSED_PATH.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(PROCESSED_PATH, index=False)
-    log.info("Saved processed fact table → %s  (%s rows)", PROCESSED_PATH, f"{len(df):,}")
+    log.info(
+        "Saved processed fact table → %s  (%s rows)",
+        PROCESSED_PATH,
+        f"{len(df):,}",
+    )
 
 
 def run_pipeline() -> pd.DataFrame:

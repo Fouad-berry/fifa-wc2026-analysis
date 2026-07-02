@@ -28,7 +28,9 @@ def run_all() -> None:
     stadium_path = DM_BASE / "dm_stadiums/stadium_dim.csv"
 
     if not all(p.exists() for p in [player_path, team_path, stadium_path]):
-        log.error("Datamarts not found. Run 'python src/datamarts/build_datamarts.py' first.")
+        log.error(
+            "Datamarts not found. Run 'python src/datamarts/build_datamarts.py' first."
+        )
         return
 
     players = pd.read_csv(player_path)
@@ -61,7 +63,9 @@ def run_all() -> None:
     )
 
     top_team = teams.sort_values("total_goals", ascending=False).iloc[0]
-    print(f"Most goals (team):         {top_team['team']} — {int(top_team['total_goals'])} goals")
+    print(
+        f"Most goals (team):         {top_team['team']} — {int(top_team['total_goals'])} goals"
+    )
 
     best_stadium = stadiums.sort_values("goals_per_match", ascending=False).iloc[0]
     print(

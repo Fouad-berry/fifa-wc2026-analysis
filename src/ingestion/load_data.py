@@ -104,11 +104,11 @@ def load_raw(path: str = str(RAW_PATH)) -> pd.DataFrame:
     df["match_date"] = pd.to_datetime(df["match_date"], errors="coerce")
 
     log.info("Loaded %s rows x %s columns", f"{len(df):,}", len(df.columns))
-    _validate(df)
+    validate(df)
     return df
 
 
-def _validate(df: pd.DataFrame) -> None:
+def validate(df: pd.DataFrame) -> None:
     nulls = df.isnull().sum()
     nulls = nulls[nulls > 0]
     if not nulls.empty:

@@ -160,7 +160,9 @@ def build_dim_stadiums(df: pd.DataFrame) -> pd.DataFrame:
         .round(2)
         .reset_index()
     )
-    dim["goals_per_match"] = (dim["total_goals_scored"] / dim["matches_hosted"]).round(2)
+    dim["goals_per_match"] = (
+        dim["total_goals_scored"] / dim["matches_hosted"]
+    ).round(2)
     log.info("  → %s stadiums", f"{len(dim):,}")
     return dim
 

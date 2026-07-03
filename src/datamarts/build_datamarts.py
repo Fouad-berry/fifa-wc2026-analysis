@@ -18,7 +18,7 @@ import logging
 
 import pandas as pd
 
-from src.logging_config import setup_logging
+from src.logging_config import get_progress, setup_logging
 from src.paths import DM_BASE, EXPORTS_DIR, PROCESSED_PATH
 
 setup_logging()
@@ -38,7 +38,7 @@ def load_processed() -> pd.DataFrame:
 
 
 def build_dim_players(df: pd.DataFrame) -> pd.DataFrame:
-    log.info("Building dim_players …")
+    log.info("Building dim_players [yellow]…[/]")
     dim = (
         df.sort_values("total_minutes_tournament", ascending=False)
         .drop_duplicates(subset=["player_id"])[
@@ -70,12 +70,12 @@ def build_dim_players(df: pd.DataFrame) -> pd.DataFrame:
         dim["total_goals_tournament"] + dim["total_assists_tournament"]
     )
     dim["bmi"] = (dim["weight_kg"] / ((dim["height_cm"] / 100) ** 2)).round(1)
-    log.info("  → %s players", f"{len(dim):,}")
+    log.info("  [green]→ %s players[/]", f"{len(dim):,}")
     return dim
 
 
 def build_dim_matches(df: pd.DataFrame) -> pd.DataFrame:
-    log.info("Building dim_matches …")
+    log.info("Building dim_matches [yellow]…[/]")
     match_cols = [
         "match_id",
         "match_date",
@@ -103,12 +103,12 @@ def build_dim_matches(df: pd.DataFrame) -> pd.DataFrame:
         .reset_index()
     )
     dim = dim.merge(match_agg, on="match_id", how="left")
-    log.info("  → %s matches", f"{len(dim):,}")
+    log.info("  [green]%s matches[/]", f"{len(dim):,}")
     return dim
 
 
 def build_dim_teams(df: pd.DataFrame) -> pd.DataFrame:
-    log.info("Building dim_teams …")
+    log.info("Building dim_teams [yellow]…[/]")
     dim = (
         df.groupby("team")
         .agg(
@@ -139,12 +139,12 @@ def build_dim_teams(df: pd.DataFrame) -> pd.DataFrame:
     )
     dim["win_rate"] = (dim["wins"] / dim["matches_played"] * 100).round(1)
     dim["goals_per_match"] = (dim["total_goals"] / dim["matches_played"]).round(2)
-    log.info("  → %s teams", f"{len(dim):,}")
+    log.info("  [green]%s teams[/]", f"{len(dim):,}")
     return dim
 
 
 def build_dim_stadiums(df: pd.DataFrame) -> pd.DataFrame:
-    log.info("Building dim_stadiums …")
+    log.info("Building dim_stadiums [yellow]…[/]")
     dim = (
         df.groupby(["stadium", "city"])
         .agg(
@@ -160,15 +160,13 @@ def build_dim_stadiums(df: pd.DataFrame) -> pd.DataFrame:
         .round(2)
         .reset_index()
     )
-    dim["goals_per_match"] = (
-        dim["total_goals_scored"] / dim["matches_hosted"]
-    ).round(2)
-    log.info("  → %s stadiums", f"{len(dim):,}")
+    dim["goals_per_match"] = (dim["total_goals_scored"] / dim["matches_hosted"]).round(2)
+    log.info("  [green]%s stadiums[/]", f"{len(dim):,}")
     return dim
 
 
 def build_fact_performance(df: pd.DataFrame) -> pd.DataFrame:
-    log.info("Building fact_performance …")
+    log.info("Building fact_performance [yellow]…[/]")
     fact_cols = [
         "player_id",
         "match_id",
@@ -235,7 +233,7 @@ def build_fact_performance(df: pd.DataFrame) -> pd.DataFrame:
         "clutch_performance_score",
     ]
     fact = df[[c for c in fact_cols if c in df.columns]].copy()
-    log.info("  → %s rows, %s columns", f"{len(fact):,}", len(fact.columns))
+    log.info("  [green]%s[/] rows, [green]%s[/] columns", f"{len(fact):,}", len(fact.columns))
     return fact
 
 
@@ -243,7 +241,7 @@ def build_fact_performance(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_exports(df: pd.DataFrame) -> dict:
-    """Build aggregated tables ready to import into Looker Studio."""
+    log.info("Building export tables [yellow]…[/]")
     exports = {}
 
     exports["top_scorers"] = (
@@ -411,35 +409,41 @@ def build_exports(df: pd.DataFrame) -> dict:
         .reset_index()
     )
 
+    log.info("Export tables done [green]OK[/]")
     return exports
 
 
 # ── MAIN ────────────────────────────────────────────────────────────────────
 
 
-def run_all() -> None:
-    df = load_processed()
+def run_all() -> dict:
+    progress = get_progress()
+    task = progress.add_task("Building datamarts …", total=6)
+    with progress:
+        df = load_processed()
+        progress.update(task, advance=1)
 
-    dimensions = {
-        "dm_players/player_dim.csv": build_dim_players(df),
-        "dm_matches/match_dim.csv": build_dim_matches(df),
-        "dm_teams/team_dim.csv": build_dim_teams(df),
-        "dm_stadiums/stadium_dim.csv": build_dim_stadiums(df),
-        "dm_performance/fact_performance.csv": build_fact_performance(df),
-    }
+        dimensions = {
+            "dm_players/player_dim.csv": build_dim_players(df),
+            "dm_matches/match_dim.csv": build_dim_matches(df),
+            "dm_teams/team_dim.csv": build_dim_teams(df),
+            "dm_stadiums/stadium_dim.csv": build_dim_stadiums(df),
+            "dm_performance/fact_performance.csv": build_fact_performance(df),
+        }
+        progress.update(task, advance=3)
 
-    for rel_path, table in dimensions.items():
-        out = DM_BASE / rel_path
-        out.parent.mkdir(parents=True, exist_ok=True)
-        table.to_csv(out, index=False)
-        log.info("Saved datamart → %s  (%s rows)", out, f"{len(table):,}")
+        for rel_path, table in dimensions.items():
+            out = DM_BASE / rel_path
+            out.parent.mkdir(parents=True, exist_ok=True)
+            table.to_csv(out, index=False)
+        progress.update(task, advance=1)
 
-    EXPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    exports = build_exports(df)
-    for fname, table in exports.items():
-        out = EXPORTS_DIR / f"{fname}.csv"
-        table.to_csv(out, index=False)
-        log.info("Exported %s.csv (%s rows)", fname, len(table))
+        EXPORTS_DIR.mkdir(parents=True, exist_ok=True)
+        exports = build_exports(df)
+        for fname, table in exports.items():
+            out = EXPORTS_DIR / f"{fname}.csv"
+            table.to_csv(out, index=False)
+        progress.update(task, advance=1)
 
     print("\n" + "=" * 50)
     print("⚽  DATAMART BUILD SUMMARY")
@@ -451,6 +455,16 @@ def run_all() -> None:
     print(f"Stadiums:       {df['stadium'].nunique():>10,}")
     print(f"Datamarts:      {len(dimensions):>10}")
     print(f"Export tables:  {len(exports):>10}")
+
+    return {
+        "fact_rows": len(df),
+        "players": int(df["player_id"].nunique()),
+        "matches": int(df["match_id"].nunique()),
+        "teams": int(df["team"].nunique()),
+        "stadiums": int(df["stadium"].nunique()),
+        "datamarts": len(dimensions),
+        "export_tables": len(exports),
+    }
 
 
 if __name__ == "__main__":

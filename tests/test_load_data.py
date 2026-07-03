@@ -34,8 +34,11 @@ class TestLoadRaw:
         ).to_csv(path, index=False)
         df = load_raw(str(path))
         assert list(df.columns) == [
-            "player_id", "match_date", "position",
-            "tournament_stage", "match_result",
+            "player_id",
+            "match_date",
+            "position",
+            "tournament_stage",
+            "match_result",
         ]
 
     def test_missing_file_raises(self):

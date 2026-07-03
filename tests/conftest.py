@@ -13,34 +13,22 @@ def raw_df() -> pd.DataFrame:
 
     data = {
         "player_id": np.random.choice(players, n),
-        "player_name": np.random.choice(
-            ["Alice", "Bob", "Carol", "Dave", "Eve"], n
-        ),
+        "player_name": np.random.choice(["Alice", "Bob", "Carol", "Dave", "Eve"], n),
         "age": np.random.randint(19, 36, n),
         "nationality": np.random.choice(["Spain", "Brazil", "England"], n),
         "team": np.random.choice(["Spain", "Brazil", "England"], n),
         "jersey_number": np.random.randint(1, 23, n),
-        "position": np.random.choice(
-            ["Goalkeeper", "Defender", "Midfielder", "Forward"], n
-        ),
+        "position": np.random.choice(["Goalkeeper", "Defender", "Midfielder", "Forward"], n),
         "height_cm": np.random.randint(165, 200, n),
         "weight_kg": np.random.randint(60, 95, n),
         "preferred_foot": np.random.choice(["Left", "Right"], n),
-        "club_name": np.random.choice(
-            ["FC Barcelona", "Real Madrid", "Liverpool"], n
-        ),
+        "club_name": np.random.choice(["FC Barcelona", "Real Madrid", "Liverpool"], n),
         "market_value_eur": np.random.uniform(1e6, 100e6, n),
         "match_id": np.random.choice(matches, n),
         "match_date": pd.Timestamp("2026-06-14"),
-        "stadium": np.random.choice(
-            ["Estadio Azteca", "Estadio BBVA", "MetLife Stadium"], n
-        ),
-        "city": np.random.choice(
-            ["Mexico City", "Guadalajara", "New York"], n
-        ),
-        "opponent_team": np.random.choice(
-            ["Spain", "Brazil", "England", "Qatar"], n
-        ),
+        "stadium": np.random.choice(["Estadio Azteca", "Estadio BBVA", "MetLife Stadium"], n),
+        "city": np.random.choice(["Mexico City", "Guadalajara", "New York"], n),
+        "opponent_team": np.random.choice(["Spain", "Brazil", "England", "Qatar"], n),
         "tournament_stage": np.random.choice(
             ["Group Stage", "Round of 16", "Quarter Finals", "Final"], n
         ),

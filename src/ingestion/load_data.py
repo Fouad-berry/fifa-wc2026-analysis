@@ -93,7 +93,7 @@ NUMERIC_COLS = [
 
 
 def load_raw(path: str = str(RAW_PATH)) -> pd.DataFrame:
-    log.info("Loading %s", path)
+    log.info("Loading [cyan]%s[/]", path)
     df = pd.read_csv(path)
     df.columns = [c.strip() for c in df.columns]
 
@@ -103,7 +103,7 @@ def load_raw(path: str = str(RAW_PATH)) -> pd.DataFrame:
 
     df["match_date"] = pd.to_datetime(df["match_date"], errors="coerce")
 
-    log.info("Loaded %s rows x %s columns", f"{len(df):,}", len(df.columns))
+    log.info("Loaded [bold]%s[/] rows x [bold]%s[/] columns", f"{len(df):,}", len(df.columns))
     validate(df)
     return df
 
@@ -118,21 +118,21 @@ def validate(df: pd.DataFrame) -> None:
     if len(positions) > 0:
         bad_pos = (~positions.isin(VALID_POSITIONS)).sum()
         if bad_pos:
-            log.warning("%s unexpected positions", bad_pos)
+            log.warning("[yellow]%s[/] unexpected positions", bad_pos)
 
     stages = df["tournament_stage"].dropna()
     if len(stages) > 0:
         bad_stage = (~stages.isin(VALID_STAGES)).sum()
         if bad_stage:
-            log.warning("%s unexpected tournament stages", bad_stage)
+            log.warning("[yellow]%s[/] unexpected tournament stages", bad_stage)
 
     results = df["match_result"].dropna()
     if len(results) > 0:
         bad_result = (~results.isin(VALID_RESULTS)).sum()
         if bad_result:
-            log.warning("%s unexpected match results", bad_result)
+            log.warning("[yellow]%s[/] unexpected match results", bad_result)
 
-    log.info("Validation complete ✓")
+    log.info("Validation complete [green]OK[/]")
 
 
 if __name__ == "__main__":

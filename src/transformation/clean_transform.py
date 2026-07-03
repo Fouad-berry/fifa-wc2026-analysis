@@ -40,7 +40,7 @@ SCORE_CLIP_COLS = [
 
 
 def clean(df: pd.DataFrame) -> pd.DataFrame:
-    log.info("Cleaning …")
+    log.info("Cleaning [yellow]…[/]")
     df = df.copy()
 
     str_cols = [
@@ -63,12 +63,12 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
     df["minutes_played"] = df["minutes_played"].clip(0, 120)
     df["top_speed_kmh"] = df["top_speed_kmh"].clip(0, 40)
 
-    log.info("Cleaning done ✓")
+    log.info("Cleaning done [green]OK[/]")
     return df
 
 
 def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
-    log.info("Engineering features …")
+    log.info("Feature engineering [yellow]…[/]")
     df = df.copy()
 
     df["stage_order"] = df["tournament_stage"].map(STAGE_ORDER)
@@ -134,7 +134,7 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
 
     df["full_starter"] = (df["minutes_played"] >= 90).astype(int)
 
-    log.info("Feature engineering done ✓")
+    log.info("Feature engineering done [green]OK[/]")
     return df
 
 
@@ -142,7 +142,7 @@ def save(df: pd.DataFrame) -> None:
     PROCESSED_PATH.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(PROCESSED_PATH, index=False)
     log.info(
-        "Saved processed fact table → %s  (%s rows)",
+        "Saved [cyan]%s[/]  ([green]%s[/] rows)",
         PROCESSED_PATH,
         f"{len(df):,}",
     )

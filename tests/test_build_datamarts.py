@@ -20,8 +20,12 @@ class TestDimPlayers:
     def test_expected_columns(self, clean_df):
         dim = build_dim_players(clean_df)
         expected = {
-            "player_id", "player_name", "age_group", "team",
-            "goal_involvement_tournament", "bmi",
+            "player_id",
+            "player_name",
+            "age_group",
+            "team",
+            "goal_involvement_tournament",
+            "bmi",
         }
         assert expected.issubset(dim.columns)
 
@@ -41,8 +45,11 @@ class TestDimMatches:
     def test_aggregate_stats_added(self, clean_df):
         dim = build_dim_matches(clean_df)
         expected = {
-            "total_goals_in_match", "total_shots", "total_cards",
-            "avg_player_rating", "players_in_match",
+            "total_goals_in_match",
+            "total_shots",
+            "total_cards",
+            "avg_player_rating",
+            "players_in_match",
         }
         assert expected.issubset(dim.columns)
 
@@ -100,9 +107,15 @@ class TestExports:
     def test_all_expected_keys(self, clean_df):
         exports = build_exports(clean_df)
         expected_keys = [
-            "top_scorers", "agg_by_position", "agg_by_stage",
-            "agg_team_attack", "agg_team_defense", "agg_physical",
-            "agg_goalkeepers", "knockout_performers", "agg_stadiums",
+            "top_scorers",
+            "agg_by_position",
+            "agg_by_stage",
+            "agg_team_attack",
+            "agg_team_defense",
+            "agg_physical",
+            "agg_goalkeepers",
+            "knockout_performers",
+            "agg_stadiums",
             "agg_age_performance",
         ]
         for k in expected_keys:
@@ -116,16 +129,16 @@ class TestExports:
         exports = build_exports(clean_df)
         for _, row in exports["knockout_performers"].iterrows():
             match_rows = clean_df[
-                (clean_df["player_id"] == row["player_id"])
-                & (clean_df["is_knockout"] == 1)
+                (clean_df["player_id"] == row["player_id"]) & (clean_df["is_knockout"] == 1)
             ]
             assert len(match_rows) > 0
 
     def test_goalkeepers_only(self, clean_df):
         exports = build_exports(clean_df)
-        assert len(exports["agg_goalkeepers"]) == clean_df[
-            clean_df["position"] == "Goalkeeper"
-        ]["player_id"].nunique()
+        assert (
+            len(exports["agg_goalkeepers"])
+            == clean_df[clean_df["position"] == "Goalkeeper"]["player_id"].nunique()
+        )
 
 
 class TestLoadProcessed:

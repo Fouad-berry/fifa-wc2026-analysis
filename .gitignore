@@ -36,8 +36,12 @@ Thumbs.db
 .idea/
 *.swp
 
+# Generated figures
+figures/
+
 # Tests / coverage
 .pytest_cache/
 htmlcov/
 .coverage
+coverage.xml
 .mypy_cache/

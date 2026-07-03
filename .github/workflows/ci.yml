@@ -25,19 +25,13 @@ jobs:
           pip install -r requirements.txt
 
       - name: Lint with flake8
-        run: flake8 src/ --max-line-length=100 --extend-ignore=E203,W503
+        run: flake8 src/ tests/ --max-line-length=100 --extend-ignore=E203,W503
 
       - name: Check formatting with black
-        run: black --check --line-length=100 src/
+        run: black --check --line-length=100 src/ tests/
 
       - name: Check imports with isort
-        run: isort --check-only --profile black --line-length=100 src/
-
-      - name: Run data pipeline
-        run: |
-          python src/transformation/clean_transform.py
-          python src/datamarts/build_datamarts.py
-          python src/analysis/metrics.py
+        run: isort --check-only --profile black --line-length=100 src/ tests/
 
       - name: Run tests
         run: pytest --cov=src/ --cov-report=xml

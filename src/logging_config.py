@@ -1,4 +1,5 @@
 import logging
+from datetime import timedelta
 
 from rich.console import Console
 from rich.logging import RichHandler
@@ -9,6 +10,13 @@ from rich.progress import (
     SpinnerColumn,
     TextColumn,
 )
+
+
+class ElapsedColumn(ProgressColumn):
+    def render(self, task: "Task") -> str:
+        if task.elapsed is None:
+            return ""
+        return str(timedelta(seconds=int(task.elapsed)))
 
 
 def setup_logging(level: int = logging.INFO) -> None:
@@ -37,17 +45,8 @@ def get_progress() -> Progress:
         TextColumn("[progress.description]{task.description}"),
         BarColumn(),
         TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-        TextColumn("•"),
+        TextColumn("\u2022"),
         TextColumn("{task.completed:,}/{task.total:,}"),
         ElapsedColumn(),
         console=get_console(),
     )
-
-
-class ElapsedColumn(ProgressColumn):
-    def render(self, task) -> str:
-        from datetime import timedelta
-
-        if task.elapsed is None:
-            return ""
-        return str(timedelta(seconds=int(task.elapsed)))

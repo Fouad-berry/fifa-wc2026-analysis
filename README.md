@@ -40,7 +40,14 @@ fifa-wc2026-analysis/
 │   ├── ingestion/load_data.py                      # CSV loader & validator
 │   ├── transformation/clean_transform.py           # Cleaning & feature engineering
 │   ├── datamarts/build_datamarts.py                # Star-schema builder
-│   └── analysis/metrics.py                         # Top-level KPI summary
+│   └── analysis/
+│       ├── metrics.py                              # Top-level KPI summary
+│       ├── viz.py                                  # Figure generators (6 charts)
+│       ├── profiling.py                            # Column distribution descriptors
+│       └── run_sql.py                              # DuckDB SQL query runner
+│
+├── cli.py                                          # Fire CLI entry point
+├── Makefile                                        # Build automation
 │
 ├── looker/
 │   ├── models/fifa_wc2026.model.lkml               # LookML model placeholder
@@ -54,6 +61,8 @@ fifa-wc2026-analysis/
 │   └── looker_setup.md
 │
 ├── .github/workflows/ci.yml                        # CI pipeline
+├── cli.py                                           # Fire CLI entry point
+├── Makefile                                         # Build automation
 ├── pyproject.toml                                  # Project metadata & tool config
 ├── requirements.txt
 ├── .gitignore
@@ -114,12 +123,20 @@ cd fifa-wc2026-analysis
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# Run full pipeline (clean → datamarts → exports)
-python src/transformation/clean_transform.py
-python src/datamarts/build_datamarts.py
-python src/analysis/metrics.py
+# Run full pipeline
+python cli.py pipeline
 
-jupyter lab
+# Or individual steps
+python cli.py transform
+python cli.py datamarts
+python cli.py metrics
+python cli.py visualize
+
+# Generate figures
+python cli.py visualize
+
+# Run tests
+make test
 ```
 
 ---

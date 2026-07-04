@@ -18,7 +18,7 @@ env/
 data/raw/*.csv
 data/processed/*.csv
 data/exports/*.csv
-data/datamarts/**/*.csv
+data/datamarts/*/*.csv
 
 # Secrets
 .env

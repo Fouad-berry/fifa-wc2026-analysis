@@ -24,6 +24,7 @@ test:
 run: pipeline
 
 pipeline:
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/ingestion/load_data.py
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/transformation/clean_transform.py
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/datamarts/build_datamarts.py
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/analysis/metrics.py

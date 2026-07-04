@@ -1,7 +1,6 @@
 .PHONY: install clean lint format test run pipeline all
 
-VENV = .venv
-PYTHON = $(VENV)/bin/python
+PYTHON = python
 PYTHONPATH = .
 
 install:

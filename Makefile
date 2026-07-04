@@ -7,7 +7,8 @@ install:
 	pip install -r requirements.txt
 
 clean:
-	rm -rf data/processed/*.csv data/exports/*.csv data/datamarts/**/*.csv
+	find data/processed data/exports -name '*.csv' -exec rm -f {} +
+	find data/datamarts -mindepth 2 -name '*.csv' -exec rm -f {} +
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 
 lint:

@@ -11,7 +11,7 @@ import pandas as pd
 import seaborn as sns
 
 from src.logging_config import setup_logging
-from src.paths import DM_BASE, EXPORTS_DIR, PROJECT_ROOT, PROCESSED_PATH
+from src.paths import DM_BASE, EXPORTS_DIR, PROCESSED_PATH, PROJECT_ROOT
 
 setup_logging()
 log = logging.getLogger(__name__)

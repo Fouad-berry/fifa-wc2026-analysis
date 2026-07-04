@@ -3,14 +3,7 @@ from datetime import timedelta
 
 from rich.console import Console
 from rich.logging import RichHandler
-from rich.progress import (
-    BarColumn,
-    Progress,
-    ProgressColumn,
-    SpinnerColumn,
-    Task,
-    TextColumn,
-)
+from rich.progress import BarColumn, Progress, ProgressColumn, SpinnerColumn, Task, TextColumn
 
 
 class ElapsedColumn(ProgressColumn):

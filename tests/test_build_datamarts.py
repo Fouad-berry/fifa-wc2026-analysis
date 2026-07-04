@@ -1,12 +1,12 @@
 import pytest
 
 from src.datamarts.build_datamarts import (
-    build_dim_players,
     build_dim_matches,
-    build_dim_teams,
+    build_dim_players,
     build_dim_stadiums,
-    build_fact_performance,
+    build_dim_teams,
     build_exports,
+    build_fact_performance,
     load_processed,
 )
 

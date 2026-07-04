@@ -1,12 +1,7 @@
 import numpy as np
 import pytest
 
-from src.transformation.clean_transform import (
-    STAGE_ORDER,
-    clean,
-    feature_engineering,
-    save,
-)
+from src.transformation.clean_transform import STAGE_ORDER, clean, feature_engineering, save
 
 
 class TestClean:

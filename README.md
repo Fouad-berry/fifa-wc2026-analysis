@@ -61,8 +61,6 @@ fifa-wc2026-analysis/
 │   └── looker_setup.md
 │
 ├── .github/workflows/ci.yml                        # CI pipeline
-├── cli.py                                           # Fire CLI entry point
-├── Makefile                                         # Build automation
 ├── pyproject.toml                                  # Project metadata & tool config
 ├── requirements.txt
 ├── .gitignore

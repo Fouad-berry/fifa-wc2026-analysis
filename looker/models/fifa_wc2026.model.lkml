@@ -1,7 +1,7 @@
 connection: "fifa_wc2026"
 
 include: "/looker/views/*.view.lkml"
-include: "/looker/explores/*.explore.lkml"
+include: "/looker/explores/*.lkml"
 
 explore: fact_performance {
   label: "Performance Facts"

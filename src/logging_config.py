@@ -8,12 +8,13 @@ from rich.progress import (
     Progress,
     ProgressColumn,
     SpinnerColumn,
+    Task,
     TextColumn,
 )
 
 
 class ElapsedColumn(ProgressColumn):
-    def render(self, task: "Task") -> str:
+    def render(self, task: Task) -> str:
         if task.elapsed is None:
             return ""
         return str(timedelta(seconds=int(task.elapsed)))

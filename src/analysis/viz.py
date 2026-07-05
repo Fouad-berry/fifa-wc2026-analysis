@@ -29,14 +29,12 @@ def top_scorers_bar(top_n: int = 15) -> None:
     if not path.exists():
         log.error("top_scorers.csv not found")
         return
-    _ensure_dir()
-
     df = pd.read_csv(path).head(top_n)
     fig, ax = plt.subplots(figsize=(10, 6))
     bars = ax.barh(
         df["player_name"] + " (" + df["team"] + ")",
         df["goals"],
-        color=sns.color_palette("RdYlGn", n_colors=len(df)),
+        color=sns.color_palette("Blues_r", n_colors=len(df)),
     )
     ax.set_xlabel("Total Goals")
     ax.set_title(f"Top {top_n} Scorers — FIFA WC 2026")
@@ -60,8 +58,6 @@ def goals_by_stage() -> None:
     if not path.exists():
         log.error("agg_by_stage.csv not found")
         return
-    _ensure_dir()
-
     df = pd.read_csv(path).sort_values("stage_order")
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
 
@@ -80,7 +76,7 @@ def goals_by_stage() -> None:
     sns.lineplot(data=df, x="tournament_stage", y="avg_rating", marker="o", ax=ax2, color="crimson")
     ax2.set_title("Avg Player Rating by Stage")
     ax2.tick_params(axis="x", rotation=30)
-    ax2.set_ylim(0, 5)
+    ax2.set_ylim(0, 10)
 
     fig.tight_layout()
     fig.savefig(FIGS_DIR / "goals_by_stage.png", dpi=150)
@@ -93,8 +89,6 @@ def position_profile() -> None:
     if not path.exists():
         log.error("agg_by_position.csv not found")
         return
-    _ensure_dir()
-
     df = pd.read_csv(path)
     metrics = ["avg_rating", "avg_goals", "avg_assists", "avg_defensive_index"]
     melted = df.melt(
@@ -104,7 +98,10 @@ def position_profile() -> None:
     fig, ax = plt.subplots(figsize=(10, 5))
     sns.barplot(data=melted, x="position", y="value", hue="metric", ax=ax)
     ax.set_title("Average Performance by Position")
-    ax.legend(loc="upper right")
+    ax.legend(
+        loc="upper right",
+        labels=["Rating", "Goals", "Assists", "Def. Index"],
+    )
     fig.tight_layout()
     fig.savefig(FIGS_DIR / "position_profile.png", dpi=150)
     plt.close(fig)
@@ -116,8 +113,6 @@ def team_goals(top_n: int = 20) -> None:
     if not path.exists():
         log.error("team_dim.csv not found")
         return
-    _ensure_dir()
-
     df = pd.read_csv(path).sort_values("total_goals", ascending=False).head(top_n)
     fig, ax = plt.subplots(figsize=(12, 6))
     colors = sns.color_palette("viridis", n_colors=len(df))
@@ -137,8 +132,6 @@ def tournament_heatmap() -> None:
     if not path.exists():
         log.error("Processed file not found")
         return
-    _ensure_dir()
-
     df = pd.read_csv(path)
     pivot = df.pivot_table(
         index="tournament_stage",
@@ -171,8 +164,6 @@ def physical_correlation() -> None:
     if not path.exists():
         log.error("Processed file not found")
         return
-    _ensure_dir()
-
     df = pd.read_csv(path)
     cols = [
         "distance_covered_km",
@@ -205,6 +196,7 @@ def physical_correlation() -> None:
 
 
 def run_all() -> None:
+    _ensure_dir()
     top_scorers_bar()
     goals_by_stage()
     position_profile()

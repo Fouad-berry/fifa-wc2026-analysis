@@ -5,7 +5,6 @@ numpy==1.26.4
 # Visualisation
 matplotlib==3.8.4
 seaborn==0.13.2
-plotly==5.22.0
 
 # Notebooks
 jupyterlab==4.2.1
@@ -16,12 +15,9 @@ duckdb==0.10.3
 
 # Stats
 scipy==1.13.0
-scikit-learn==1.4.2
 
 # Utilities
-python-dotenv==1.0.1
 rich==13.7.1
-tqdm==4.66.4
 fire==0.7.1
 
 # Code quality

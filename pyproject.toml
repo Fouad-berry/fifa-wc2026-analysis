@@ -33,10 +33,6 @@ dev = [
     "pytest-cov>=5.0",
     "jupyterlab>=4.2",
     "ipykernel>=6.29",
-    "plotly>=5.22",
-    "scikit-learn>=1.4",
-    "python-dotenv>=1.0",
-    "tqdm>=4.66",
 ]
 
 [tool.setuptools.packages.find]

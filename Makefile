@@ -9,6 +9,7 @@ install:
 clean:
 	find data/processed data/exports -name '*.csv' -exec rm -f {} +
 	find data/datamarts -mindepth 2 -name '*.csv' -exec rm -f {} +
+	find figures -name '*.png' -exec rm -f {} +
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 
 lint:
@@ -28,5 +29,7 @@ pipeline:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/transformation/clean_transform.py
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/datamarts/build_datamarts.py
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/analysis/metrics.py
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/analysis/profiling.py
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/analysis/viz.py
 
 all: lint test pipeline

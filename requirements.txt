@@ -7,7 +7,7 @@ matplotlib==3.8.4
 seaborn==0.13.2
 
 # Notebooks
-jupyterlab==4.2.1
+jupyterlab==4.6.1
 ipykernel==6.29.4
 
 # SQL (local)

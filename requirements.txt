@@ -8,7 +8,7 @@ seaborn==0.13.2
 
 # Notebooks
 jupyterlab==4.2.1
-ipykernel==6.29.4
+ipykernel==7.3.0
 
 # SQL (local)
 duckdb==0.10.3

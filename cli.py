@@ -75,9 +75,15 @@ def sql() -> None:
 
 def pipeline() -> None:
     console.rule("[bold cyan]Step 1: Ingest[/]")
-    ingest()
+    from src.ingestion.load_data import load_raw
+
+    df = load_raw()
+    console.print(f"[bold green]OK[/] — {len(df):,} rows, {len(df.columns)} columns")
+
     console.rule("[bold cyan]Step 2: Transform[/]")
-    transform()
+    from src.transformation.clean_transform import run_pipeline
+
+    df = run_pipeline(df)
     console.rule("[bold cyan]Step 3: Datamarts[/]")
     datamarts()
     console.rule("[bold cyan]Step 4: Metrics[/]")

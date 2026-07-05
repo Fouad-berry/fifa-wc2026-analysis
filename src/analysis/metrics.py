@@ -11,7 +11,6 @@ import pandas as pd
 from src.logging_config import setup_logging
 from src.paths import DM_BASE, PROCESSED_PATH
 
-setup_logging()
 log = logging.getLogger(__name__)
 
 
@@ -94,4 +93,5 @@ def run_all() -> dict:
 
 
 if __name__ == "__main__":
+    setup_logging()
     run_all()

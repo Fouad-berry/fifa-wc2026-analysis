@@ -13,7 +13,6 @@ from scipy import stats
 from src.logging_config import setup_logging
 from src.paths import PROCESSED_PATH
 
-setup_logging()
 log = logging.getLogger(__name__)
 
 SKEW_CUTOFF = 1.0
@@ -79,4 +78,5 @@ def run_all() -> None:
 
 
 if __name__ == "__main__":
+    setup_logging()
     run_all()

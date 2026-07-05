@@ -12,7 +12,6 @@ import duckdb
 from src.logging_config import setup_logging
 from src.paths import DM_BASE, PROJECT_ROOT
 
-setup_logging()
 log = logging.getLogger(__name__)
 
 QUERIES_DIR = PROJECT_ROOT / "sql" / "queries"
@@ -73,4 +72,5 @@ def run_all() -> None:
 
 
 if __name__ == "__main__":
+    setup_logging()
     run_all()

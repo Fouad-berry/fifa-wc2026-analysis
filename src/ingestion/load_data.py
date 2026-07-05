@@ -11,7 +11,6 @@ import pandas as pd
 from src.logging_config import setup_logging
 from src.paths import RAW_PATH
 
-setup_logging()
 log = logging.getLogger(__name__)
 
 VALID_POSITIONS = {"Goalkeeper", "Defender", "Midfielder", "Forward"}
@@ -147,6 +146,7 @@ def validate(df: pd.DataFrame) -> None:
 
 
 if __name__ == "__main__":
+    setup_logging()
     df = load_raw()
     print(df.shape)
     print(df.dtypes)

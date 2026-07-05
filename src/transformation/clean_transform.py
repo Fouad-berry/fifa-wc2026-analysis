@@ -14,7 +14,6 @@ from src.ingestion.load_data import load_raw
 from src.logging_config import setup_logging
 from src.paths import PROCESSED_PATH
 
-setup_logging()
 log = logging.getLogger(__name__)
 
 STAGE_ORDER = {
@@ -164,4 +163,5 @@ def run_pipeline(df: pd.DataFrame | None = None) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
+    setup_logging()
     run_pipeline()

@@ -78,7 +78,7 @@ for table_id, path in tables.items():
 - Looker Admin → Connections → New → BigQuery
 - Set connection name to `fifa_wc2026_bq` (matches the `.model.lkml`)
 - Deploy `looker/` folder to your Looker project repository
-- The `fifa_explore.lkml` automatically joins all 4 dimensions to the fact table
+- The `fifa_explore.lkml` automatically joins 3 dimensions (players, matches, teams) to the fact table; stadiums have a separate explore
 
 ---
 

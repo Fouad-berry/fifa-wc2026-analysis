@@ -1,4 +1,4 @@
-connection: "fifa_wc2026"
+connection: "fifa_wc2026_bq"
 
 include: "/looker/views/*.view.lkml"
 include: "/looker/explores/*.lkml"

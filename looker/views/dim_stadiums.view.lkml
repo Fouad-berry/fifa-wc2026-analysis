@@ -1,9 +1,13 @@
 view: dim_stadiums {
   sql_table_name: dim_stadiums ;;
 
-  dimension: stadium {
+  dimension: stadium_city_key {
     type: string
     primary_key: yes
+    sql: ${TABLE}.stadium || '||' || ${TABLE}.city ;;
+  }
+  dimension: stadium {
+    type: string
     sql: ${TABLE}.stadium ;;
   }
   dimension: city {

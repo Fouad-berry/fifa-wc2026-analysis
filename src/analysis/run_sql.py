@@ -25,7 +25,7 @@ TABLES = {
     "fact_performance": DM_BASE / "dm_performance/fact_performance.csv",
 }
 
-SELECT_RE = re.compile(r"(SELECT\s+.+?;)", re.IGNORECASE | re.DOTALL)
+SELECT_RE = re.compile(r"(SELECT\b.+?;)", re.IGNORECASE | re.DOTALL)
 
 
 def load_tables(conn: duckdb.DuckDBPyConnection) -> None:
@@ -33,7 +33,8 @@ def load_tables(conn: duckdb.DuckDBPyConnection) -> None:
         if not path.exists():
             log.warning("Skipping %s — file not found at %s", table, path)
             continue
-        conn.execute(f"CREATE OR REPLACE TABLE {table} AS SELECT * FROM read_csv_auto('{path}')")
+        safe_path = str(path).replace("'", "''")
+        conn.execute(f"CREATE OR REPLACE TABLE {table} AS SELECT * FROM read_csv_auto('{safe_path}')")
         count = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
         log.info("Loaded %s (%s rows)", table, f"{count:,}")
 
@@ -54,7 +55,7 @@ def run_queries(conn: duckdb.DuckDBPyConnection) -> None:
             stmt = match.group(1).strip()
             try:
                 result = conn.execute(stmt).fetchdf()
-                if len(result) > 0:
+                if not result.empty:
                     print(result.to_string(index=False))
                 else:
                     print("(empty result)")

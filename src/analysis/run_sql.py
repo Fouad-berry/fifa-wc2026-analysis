@@ -22,7 +22,7 @@ TABLES = {
     "fact_performance": DM_BASE / "dm_performance/fact_performance.csv",
 }
 
-SELECT_RE = re.compile(r"(SELECT\b.+?;)", re.IGNORECASE | re.DOTALL)
+STATEMENT_RE = re.compile(r"\b(SELECT|WITH)\b", re.IGNORECASE)
 
 
 def load_tables(conn: duckdb.DuckDBPyConnection) -> None:
@@ -50,8 +50,11 @@ def run_queries(conn: duckdb.DuckDBPyConnection) -> None:
         print(f"{'=' * 60}")
         sql = sql_file.read_text()
 
-        for match in SELECT_RE.finditer(sql):
-            stmt = match.group(1).strip()
+        for fragment in sql.split(";"):
+            fragment = fragment.strip()
+            if not fragment or not STATEMENT_RE.match(fragment):
+                continue
+            stmt = fragment + ";"
             try:
                 result = conn.execute(stmt).fetchdf()
                 if not result.empty:

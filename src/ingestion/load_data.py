@@ -114,35 +114,47 @@ def load_raw(path: str | None = None) -> pd.DataFrame:
         log.warning("[yellow]%s[/] dates coerced to NaT", after - before)
 
     log.info("Loaded [bold]%s[/] rows x [bold]%s[/] columns", f"{len(df):,}", len(df.columns))
-    validate(df)
+    n_issues = validate(df)
+    if n_issues:
+        plural = "" if n_issues == 1 else "s"
+        log.warning("[yellow]Validation reported %s issue%s[/]", n_issues, plural)
     return df
 
 
-def validate(df: pd.DataFrame) -> None:
+def validate(df: pd.DataFrame) -> int:
     nulls = df.isnull().sum()
     nulls = nulls[nulls > 0]
     if not nulls.empty:
         log.warning("Null values detected:\n%s", nulls)
 
     positions = df["position"].dropna()
+    bad_pos = 0
     if len(positions) > 0:
-        bad_pos = (~positions.isin(VALID_POSITIONS)).sum()
+        bad_pos = int((~positions.isin(VALID_POSITIONS)).sum())
         if bad_pos:
             log.warning("[yellow]%s[/] unexpected positions", bad_pos)
 
     stages = df["tournament_stage"].dropna()
+    bad_stage = 0
     if len(stages) > 0:
-        bad_stage = (~stages.isin(VALID_STAGES)).sum()
+        bad_stage = int((~stages.isin(VALID_STAGES)).sum())
         if bad_stage:
             log.warning("[yellow]%s[/] unexpected tournament stages", bad_stage)
 
     results = df["match_result"].dropna()
+    bad_result = 0
     if len(results) > 0:
-        bad_result = (~results.isin(VALID_RESULTS)).sum()
+        bad_result = int((~results.isin(VALID_RESULTS)).sum())
         if bad_result:
             log.warning("[yellow]%s[/] unexpected match results", bad_result)
 
-    log.info("Validation complete [green]OK[/]")
+    total = bad_pos + bad_stage + bad_result
+    log.info(
+        "Validation complete — [yellow]%s[/] issue%s found",
+        total,
+        "" if total == 1 else "s",
+    )
+    return total
 
 
 if __name__ == "__main__":

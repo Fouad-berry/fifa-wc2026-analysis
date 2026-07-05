@@ -1,7 +1,7 @@
 """
 viz.py
 ------
-Generate key analysis plots using matplotlib, seaborn, and plotly.
+Generate key analysis plots using matplotlib and seaborn.
 """
 
 import logging

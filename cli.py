@@ -103,15 +103,21 @@ def all_cmds() -> None:
     console.print("[bold green]✔ All tasks complete[/]")
 
 
+def main() -> None:
+    fire.Fire(
+        {
+            "ingest": ingest,
+            "transform": transform,
+            "datamarts": datamarts,
+            "metrics": metrics,
+            "visualize": visualize,
+            "profile": profile,
+            "sql": sql,
+            "pipeline": pipeline,
+            "all": all_cmds,
+        }
+    )
+
+
 if __name__ == "__main__":
-    fire.Fire({
-        "ingest": ingest,
-        "transform": transform,
-        "datamarts": datamarts,
-        "metrics": metrics,
-        "visualize": visualize,
-        "profile": profile,
-        "sql": sql,
-        "pipeline": pipeline,
-        "all": all_cmds,
-    })
+    main()

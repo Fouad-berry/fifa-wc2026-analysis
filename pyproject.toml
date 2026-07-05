@@ -35,6 +35,9 @@ dev = [
     "ipykernel>=6.29",
 ]
 
+[project.scripts]
+fifa-wc2026 = "cli:main"
+
 [tool.setuptools.packages.find]
 include = ["src*"]
 

@@ -77,14 +77,16 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
 
     df["age_group"] = pd.cut(
         df["age"],
-        bins=[16, 20, 24, 28, 32, 40],
+        bins=[0, 20, 24, 28, 32, 40],
         labels=["U21", "21-24", "25-28", "29-32", "33+"],
+        include_lowest=True,
     )
 
     df["market_value_tier"] = pd.cut(
         df["market_value_eur"],
-        bins=[0, 5e6, 20e6, 60e6, 150e6, 1e9],
+        bins=[-1, 5e6, 20e6, 60e6, 150e6, 1e9],
         labels=["<€5M", "€5-20M", "€20-60M", "€60-150M", "€150M+"],
+        include_lowest=True,
     )
 
     df["rating_tier"] = pd.cut(
@@ -123,6 +125,10 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
         + df["recoveries"] * 0.8
     ).round(2)
 
+    unmapped = df["stage_order"].isna().sum()
+    if unmapped:
+        log.warning("[yellow]%s[/] rows have unmapped tournament_stage — classified as non-knockout", unmapped)
+
     df["is_knockout"] = (df["stage_order"] >= 2).astype(int)
     df["goal_diff"] = df["goals_team"] - df["goals_opponent"]
 
@@ -148,8 +154,9 @@ def save(df: pd.DataFrame) -> None:
     )
 
 
-def run_pipeline() -> pd.DataFrame:
-    df = load_raw()
+def run_pipeline(df: pd.DataFrame | None = None) -> pd.DataFrame:
+    if df is None:
+        df = load_raw()
     df = clean(df)
     df = feature_engineering(df)
     save(df)

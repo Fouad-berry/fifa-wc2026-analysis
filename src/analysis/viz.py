@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-from src.logging_config import setup_logging
+from src.logging_config import get_console, setup_logging
 from src.paths import DM_BASE, EXPORTS_DIR, FIGS_DIR, PROCESSED_PATH
 
 log = logging.getLogger(__name__)
@@ -206,7 +206,8 @@ def run_all() -> None:
         physical_correlation(df)
     else:
         log.warning("Processed file not found — skipping heatmap and correlation plots")
-    print(f"\nAll figures saved to [cyan]{FIGS_DIR}[/]")
+    console = get_console()
+    console.print(f"\nAll figures saved to [cyan]{FIGS_DIR}[/]")
 
 
 if __name__ == "__main__":

@@ -11,7 +11,7 @@ jupyterlab==4.2.1
 ipykernel==6.29.4
 
 # SQL (local)
-duckdb==0.10.3
+duckdb==1.5.4
 
 # Stats
 scipy==1.13.0

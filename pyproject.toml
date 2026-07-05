@@ -9,7 +9,7 @@ description = "FIFA World Cup 2026 — Player Performance Analysis"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "Fouad MOUTAIROU", email = ""},
+    {name = "Fouad MOUTAIROU"},
 ]
 
 requires-python = ">=3.11"
@@ -36,7 +36,7 @@ dev = [
 ]
 
 [project.scripts]
-fifa-wc2026 = "cli:main"
+fifa-wc2026 = "src.cli_runner:main"
 
 [tool.setuptools.packages.find]
 include = ["src*"]

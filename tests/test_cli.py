@@ -1,4 +1,14 @@
-from cli import all_cmds, datamarts, ingest, metrics, pipeline, profile, sql, transform, visualize
+from src.cli_runner import (
+    all_cmds,
+    datamarts,
+    ingest,
+    metrics,
+    pipeline,
+    profile,
+    sql,
+    transform,
+    visualize,
+)
 
 
 def test_dispatch_all_keys_present():

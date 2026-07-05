@@ -1,19 +1,13 @@
-"""
-profiling.py
-------------
-Statistical profiling of numeric columns using scipy.
-Prints distribution descriptors per numeric column.
-"""
-
 import logging
 
 import pandas as pd
 from scipy import stats
 
-from src.logging_config import setup_logging
+from src.logging_config import get_console, setup_logging
 from src.paths import PROCESSED_PATH
 
 log = logging.getLogger(__name__)
+console = get_console()
 
 SKEW_CUTOFF = 1.0
 KURTOSIS_CUTOFF = 1.0
@@ -41,18 +35,15 @@ def describe_distribution(series: pd.Series) -> dict:
 def run_all() -> None:
     if not PROCESSED_PATH.exists():
         log.error("Processed file not found at %s", PROCESSED_PATH)
-        print("Run 'python src/transformation/clean_transform.py' first.")
         return
 
     df = pd.read_csv(PROCESSED_PATH, parse_dates=["match_date"])
     numeric_cols = df.select_dtypes(include="number").columns
 
-    print("\n" + "=" * 60)
-    print("  DATA PROFILING REPORT")
-    print("=" * 60)
-    print(f"Columns profiled: {len(numeric_cols)}")
-    print(f"Rows: {len(df):,}")
-    print()
+    console.rule("[bold]DATA PROFILING REPORT[/]")
+    console.print(f"Columns profiled: [cyan]{len(numeric_cols)}[/]")
+    console.print(f"Rows: [cyan]{len(df):,}[/]")
+    console.print()
 
     for col in sorted(numeric_cols):
         d = describe_distribution(df[col])
@@ -65,15 +56,15 @@ def run_all() -> None:
         if abs(d["kurtosis"]) > KURTOSIS_CUTOFF:
             flags.append(f"heavy_tails(kurt={d['kurtosis']:+.2f})")
 
-        flag_str = f"  ⚠ {' | '.join(flags)}" if flags else ""
-        print(
+        flag_str = f"  [yellow]⚠ {' | '.join(flags)}[/]" if flags else ""
+        console.print(
             f"  {col:35s}  {d['mean']:>8.3f} ± {d['std']:<8.3f}"
             f"  [{d['min']:>8.3f} – {d['max']:>8.3f}]"
             f"  n={d['count']:>6,}"
             f"{flag_str}"
         )
 
-    print()
+    console.print()
     log.info("Profiling complete ✓")
 
 

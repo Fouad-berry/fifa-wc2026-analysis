@@ -30,7 +30,16 @@ def raw_df() -> pd.DataFrame:
         "city": np.random.choice(["Mexico City", "Guadalajara", "New York"], n),
         "opponent_team": np.random.choice(["Spain", "Brazil", "England", "Qatar"], n),
         "tournament_stage": np.random.choice(
-            ["Group Stage", "Round of 16", "Quarter Finals", "Final"], n
+            [
+                "Group Stage",
+                "Round of 32",
+                "Round of 16",
+                "Quarter Finals",
+                "Semi Finals",
+                "Third Place Match",
+                "Final",
+            ],
+            n,
         ),
         "match_result": np.random.choice(["W", "D", "L"], n),
         "goals_team": np.random.randint(0, 5, n),

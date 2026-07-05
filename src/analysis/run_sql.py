@@ -10,11 +10,9 @@ import re
 import duckdb
 
 from src.logging_config import setup_logging
-from src.paths import DM_BASE, PROJECT_ROOT
+from src.paths import DM_BASE, QUERIES_DIR
 
 log = logging.getLogger(__name__)
-
-QUERIES_DIR = PROJECT_ROOT / "sql" / "queries"
 
 TABLES = {
     "dim_players": DM_BASE / "dm_players/player_dim.csv",

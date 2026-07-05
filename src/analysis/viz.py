@@ -11,11 +11,9 @@ import pandas as pd
 import seaborn as sns
 
 from src.logging_config import setup_logging
-from src.paths import DM_BASE, EXPORTS_DIR, PROCESSED_PATH, PROJECT_ROOT
+from src.paths import DM_BASE, EXPORTS_DIR, FIGS_DIR, PROCESSED_PATH
 
 log = logging.getLogger(__name__)
-
-FIGS_DIR = PROJECT_ROOT / "figures"
 sns.set_theme(style="whitegrid")
 
 

@@ -126,12 +126,13 @@ def team_goals(top_n: int = 20) -> None:
     log.info("Saved figures/team_goals.png")
 
 
-def tournament_heatmap() -> None:
-    path = PROCESSED_PATH
-    if not path.exists():
-        log.error("Processed file not found")
-        return
-    df = pd.read_csv(path)
+def tournament_heatmap(df: pd.DataFrame | None = None) -> None:
+    if df is None:
+        path = PROCESSED_PATH
+        if not path.exists():
+            log.error("Processed file not found")
+            return
+        df = pd.read_csv(path)
     pivot = df.pivot_table(
         index="tournament_stage",
         columns="position",
@@ -158,12 +159,13 @@ def tournament_heatmap() -> None:
     log.info("Saved figures/tournament_heatmap.png")
 
 
-def physical_correlation() -> None:
-    path = PROCESSED_PATH
-    if not path.exists():
-        log.error("Processed file not found")
-        return
-    df = pd.read_csv(path)
+def physical_correlation(df: pd.DataFrame | None = None) -> None:
+    if df is None:
+        path = PROCESSED_PATH
+        if not path.exists():
+            log.error("Processed file not found")
+            return
+        df = pd.read_csv(path)
     cols = [
         "distance_covered_km",
         "sprint_distance_km",
@@ -200,8 +202,12 @@ def run_all() -> None:
     goals_by_stage()
     position_profile()
     team_goals()
-    tournament_heatmap()
-    physical_correlation()
+    if PROCESSED_PATH.exists():
+        df = pd.read_csv(PROCESSED_PATH)
+        tournament_heatmap(df)
+        physical_correlation(df)
+    else:
+        log.warning("Processed file not found — skipping heatmap and correlation plots")
     print(f"\nAll figures saved to [cyan]{FIGS_DIR}[/]")
 
 

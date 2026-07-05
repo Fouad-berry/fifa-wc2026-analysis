@@ -239,6 +239,10 @@ def build_fact_performance(df: pd.DataFrame) -> pd.DataFrame:
 # ── ANALYTICAL EXPORT TABLES ────────────────────────────────────────────────
 
 
+TOP_SCORERS_LIMIT = 50
+KNOCKOUT_LIMIT = 30
+
+
 def build_exports(df: pd.DataFrame) -> dict:
     log.info("Building export tables [yellow]…[/]")
     exports = {}
@@ -258,7 +262,7 @@ def build_exports(df: pd.DataFrame) -> dict:
         .round(2)
         .reset_index()
         .sort_values("goals", ascending=False)
-        .head(50)
+        .head(TOP_SCORERS_LIMIT)
     )
 
     exports["agg_by_position"] = (
@@ -375,7 +379,7 @@ def build_exports(df: pd.DataFrame) -> dict:
         .round(2)
         .reset_index()
         .sort_values("avg_clutch", ascending=False)
-        .head(30)
+        .head(KNOCKOUT_LIMIT)
     )
 
     exports["agg_stadiums"] = (

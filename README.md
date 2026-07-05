@@ -119,22 +119,25 @@ fifa-wc2026-analysis/
 git clone https://github.com/<your-username>/fifa-wc2026-analysis.git
 cd fifa-wc2026-analysis
 python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+pip install -e .
+pip install -e ".[dev]"
 
-# Run full pipeline
-python cli.py pipeline
+# Run full pipeline (all steps)
+python cli.py all
 
 # Or individual steps
+python cli.py pipeline   # ingest → transform → datamarts → metrics
 python cli.py transform
 python cli.py datamarts
 python cli.py metrics
 python cli.py visualize
+python cli.py profile
+python cli.py sql
 
-# Generate figures
-python cli.py visualize
-
-# Run tests
+# Run tests + lint
 make test
+make lint
+make format
 ```
 
 ---
@@ -157,7 +160,7 @@ make test
 |---|---|
 | Language | Python ≥3.11 |
 | Data manipulation | pandas, numpy |
-| Visualisation | matplotlib, seaborn, plotly |
+| Visualisation | matplotlib, seaborn |
 | SQL | DuckDB (local) / BigQuery (cloud) |
 | BI | Looker Studio |
 | CI | GitHub Actions |

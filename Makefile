@@ -4,7 +4,8 @@ PYTHON = python
 PYTHONPATH = .
 
 install:
-	pip install -r requirements.txt
+	pip install -e .
+	pip install -e ".[dev]"
 
 clean:
 	find data/processed data/exports -name '*.csv' -exec rm -f {} +
@@ -24,13 +25,7 @@ test:
 
 run: pipeline
 
-pipeline:
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/ingestion/load_data.py
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/transformation/clean_transform.py
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/datamarts/build_datamarts.py
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/analysis/metrics.py
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/analysis/profiling.py
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/analysis/viz.py
+pipeline: cli-all
 
 cli-all:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) cli.py all

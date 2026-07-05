@@ -92,16 +92,27 @@ NUMERIC_COLS = [
 ]
 
 
-def load_raw(path: str = str(RAW_PATH)) -> pd.DataFrame:
+def load_raw(path: str | None = None) -> pd.DataFrame:
+    if path is None:
+        path = str(RAW_PATH)
     log.info("Loading [cyan]%s[/]", path)
     df = pd.read_csv(path)
     df.columns = [c.strip() for c in df.columns]
 
     for col in NUMERIC_COLS:
         if col in df.columns:
+            before = df[col].isna().sum()
             df[col] = pd.to_numeric(df[col], errors="coerce")
+            after = df[col].isna().sum()
+            coerced = after - before
+            if coerced:
+                log.warning("[yellow]%s[/] values coerced to NaN in [cyan]%s[/]", coerced, col)
 
+    before = df["match_date"].isna().sum()
     df["match_date"] = pd.to_datetime(df["match_date"], errors="coerce")
+    after = df["match_date"].isna().sum()
+    if after - before:
+        log.warning("[yellow]%s[/] dates coerced to NaT", after - before)
 
     log.info("Loaded [bold]%s[/] rows x [bold]%s[/] columns", f"{len(df):,}", len(df.columns))
     validate(df)

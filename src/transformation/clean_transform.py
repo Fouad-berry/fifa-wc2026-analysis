@@ -39,7 +39,13 @@ MV_BINS = [-1, 5e6, 20e6, 60e6, 150e6, 1e9]
 MV_LABELS = ["<€5M", "€5-20M", "€20-60M", "€60-150M", "€150M+"]
 
 RTG_BINS = [0, 4, 6, 7.5, 9, 10]
-RTG_LABELS = ["Poor (<4)", "Below Avg (4-6)", "Good (6-7.5)", "Excellent (7.5-9)", "World Class (9+)"]
+RTG_LABELS = [
+    "Poor (<4)",
+    "Below Avg (4-6)",
+    "Good (6-7.5)",
+    "Excellent (7.5-9)",
+    "World Class (9+)",
+]
 
 DEF_TACKLE_W, DEF_INTERCEPT_W, DEF_CLEAR_W, DEF_BLOCK_W, DEF_RECOVERY_W = 1.5, 1.5, 1.0, 1.2, 0.8
 

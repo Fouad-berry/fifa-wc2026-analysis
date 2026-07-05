@@ -1,6 +1,6 @@
 # Core
 pandas==2.2.2
-numpy==1.26.4
+numpy==2.4.6
 
 # Visualisation
 matplotlib==3.8.4

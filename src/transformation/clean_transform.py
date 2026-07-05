@@ -26,6 +26,26 @@ STAGE_ORDER = {
     "Final": 7,
 }
 
+RATING_MIN, RATING_MAX = 0, 10
+PCT_MIN, PCT_MAX = 0, 1
+SCORE_MIN, SCORE_MAX = 0, 100
+MINUTES_MIN, MINUTES_MAX = 0, 120
+SPEED_MIN, SPEED_MAX = 0, 40
+
+AGE_BINS = [0, 20, 24, 28, 32, 40]
+AGE_LABELS = ["U21", "21-24", "25-28", "29-32", "33+"]
+
+MV_BINS = [-1, 5e6, 20e6, 60e6, 150e6, 1e9]
+MV_LABELS = ["<€5M", "€5-20M", "€20-60M", "€60-150M", "€150M+"]
+
+RTG_BINS = [0, 4, 6, 7.5, 9, 10]
+RTG_LABELS = ["Poor (<4)", "Below Avg (4-6)", "Good (6-7.5)", "Excellent (7.5-9)", "World Class (9+)"]
+
+DEF_TACKLE_W, DEF_INTERCEPT_W, DEF_CLEAR_W, DEF_BLOCK_W, DEF_RECOVERY_W = 1.5, 1.5, 1.0, 1.2, 0.8
+
+KNOCKOUT_THRESHOLD = 2
+FULL_STARTER_MINUTES = 90
+
 SCORE_CLIP_COLS = [
     "performance_score",
     "offensive_contribution",
@@ -53,14 +73,14 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
     for col in str_cols:
         df[col] = df[col].str.strip()
 
-    df["player_rating"] = df["player_rating"].clip(0, 10)
-    df["tournament_rating"] = df["tournament_rating"].clip(0, 10)
-    df["pass_accuracy"] = df["pass_accuracy"].clip(0, 1)
-    df["save_percentage"] = df["save_percentage"].clip(0, 1)
-    df["stamina_score"] = df["stamina_score"].clip(0, 100)
-    df[SCORE_CLIP_COLS] = df[SCORE_CLIP_COLS].clip(0, 100)
-    df["minutes_played"] = df["minutes_played"].clip(0, 120)
-    df["top_speed_kmh"] = df["top_speed_kmh"].clip(0, 40)
+    df["player_rating"] = df["player_rating"].clip(RATING_MIN, RATING_MAX)
+    df["tournament_rating"] = df["tournament_rating"].clip(RATING_MIN, RATING_MAX)
+    df["pass_accuracy"] = df["pass_accuracy"].clip(PCT_MIN, PCT_MAX)
+    df["save_percentage"] = df["save_percentage"].clip(PCT_MIN, PCT_MAX)
+    df["stamina_score"] = df["stamina_score"].clip(SCORE_MIN, SCORE_MAX)
+    df[SCORE_CLIP_COLS] = df[SCORE_CLIP_COLS].clip(SCORE_MIN, SCORE_MAX)
+    df["minutes_played"] = df["minutes_played"].clip(MINUTES_MIN, MINUTES_MAX)
+    df["top_speed_kmh"] = df["top_speed_kmh"].clip(SPEED_MIN, SPEED_MAX)
 
     log.info("Cleaning done [green]OK[/]")
     return df
@@ -76,28 +96,22 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
 
     df["age_group"] = pd.cut(
         df["age"],
-        bins=[0, 20, 24, 28, 32, 40],
-        labels=["U21", "21-24", "25-28", "29-32", "33+"],
+        bins=AGE_BINS,
+        labels=AGE_LABELS,
         include_lowest=True,
     )
 
     df["market_value_tier"] = pd.cut(
         df["market_value_eur"],
-        bins=[-1, 5e6, 20e6, 60e6, 150e6, 1e9],
-        labels=["<€5M", "€5-20M", "€20-60M", "€60-150M", "€150M+"],
+        bins=MV_BINS,
+        labels=MV_LABELS,
         include_lowest=True,
     )
 
     df["rating_tier"] = pd.cut(
         df["player_rating"],
-        bins=[0, 4, 6, 7.5, 9, 10],
-        labels=[
-            "Poor (<4)",
-            "Below Avg (4-6)",
-            "Good (6-7.5)",
-            "Excellent (7.5-9)",
-            "World Class (9+)",
-        ],
+        bins=RTG_BINS,
+        labels=RTG_LABELS,
     )
 
     df["shot_efficiency"] = np.where(
@@ -117,11 +131,11 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
     df["goal_involvement"] = df["goals"] + df["assists"]
 
     df["defensive_index"] = (
-        df["tackles"] * 1.5
-        + df["interceptions"] * 1.5
-        + df["clearances"] * 1.0
-        + df["blocks"] * 1.2
-        + df["recoveries"] * 0.8
+        df["tackles"] * DEF_TACKLE_W
+        + df["interceptions"] * DEF_INTERCEPT_W
+        + df["clearances"] * DEF_CLEAR_W
+        + df["blocks"] * DEF_BLOCK_W
+        + df["recoveries"] * DEF_RECOVERY_W
     ).round(2)
 
     unmapped = df["stage_order"].isna().sum()
@@ -131,7 +145,7 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
             unmapped,
         )
 
-    df["is_knockout"] = (df["stage_order"] >= 2).astype(int)
+    df["is_knockout"] = (df["stage_order"] >= KNOCKOUT_THRESHOLD).astype(int)
     df["goal_diff"] = df["goals_team"] - df["goals_opponent"]
 
     df["km_per_minute"] = np.where(
@@ -140,7 +154,7 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
         np.nan,
     )
 
-    df["full_starter"] = (df["minutes_played"] >= 90).astype(int)
+    df["full_starter"] = (df["minutes_played"] >= FULL_STARTER_MINUTES).astype(int)
 
     log.info("Feature engineering done [green]OK[/]")
     return df

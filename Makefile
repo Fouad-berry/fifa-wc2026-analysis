@@ -1,4 +1,4 @@
-.PHONY: install clean lint format test run pipeline all
+.PHONY: install clean lint format test run pipeline all cli-all
 
 PYTHON = python
 PYTHONPATH = .
@@ -31,5 +31,8 @@ pipeline:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/analysis/metrics.py
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/analysis/profiling.py
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) src/analysis/viz.py
+
+cli-all:
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) cli.py all
 
 all: lint test pipeline

@@ -35,7 +35,9 @@ def run_all() -> dict:
     stadiums = pd.read_csv(stadium_path)
 
     total_goals = int(df["goals"].sum()) if not df.empty else 0
-    avg_goals_per_match = round(df.groupby("match_id")["goals"].sum().mean(), 2) if not df.empty else 0.0
+    avg_goals_per_match = (
+        round(df.groupby("match_id")["goals"].sum().mean(), 2) if not df.empty else 0.0
+    )
 
     top_scorer = (
         players.sort_values("total_goals_tournament", ascending=False).iloc[0]

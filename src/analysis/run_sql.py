@@ -33,7 +33,9 @@ def load_tables(conn: duckdb.DuckDBPyConnection) -> None:
             log.warning("Skipping %s — file not found at %s", table, path)
             continue
         safe_path = str(path).replace("'", "''")
-        conn.execute(f"CREATE OR REPLACE TABLE {table} AS SELECT * FROM read_csv_auto('{safe_path}')")
+        conn.execute(
+            f"CREATE OR REPLACE TABLE {table} AS SELECT * FROM read_csv_auto('{safe_path}')"
+        )
         count = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
         log.info("Loaded %s (%s rows)", table, f"{count:,}")
 

@@ -126,7 +126,10 @@ def feature_engineering(df: pd.DataFrame) -> pd.DataFrame:
 
     unmapped = df["stage_order"].isna().sum()
     if unmapped:
-        log.warning("[yellow]%s[/] rows have unmapped tournament_stage — classified as non-knockout", unmapped)
+        log.warning(
+            "[yellow]%s[/] rows have unmapped tournament_stage — classified as non-knockout",
+            unmapped,
+        )
 
     df["is_knockout"] = (df["stage_order"] >= 2).astype(int)
     df["goal_diff"] = df["goals_team"] - df["goals_opponent"]

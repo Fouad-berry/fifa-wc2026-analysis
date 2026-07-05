@@ -151,5 +151,10 @@
 | `goal_diff` | goals_team − goals_opponent | Match goal difference |
 | `km_per_minute` | distance/minutes | Distance efficiency |
 | `full_starter` | minutes≥90 | 1 = full game played |
-| `bmi` | weight/(height/100)² | Body Mass Index (dim_players only) |
-| `goal_involvement_tournament` | total_goals + total_assists | Career total (dim_players only) |
+
+### Engineered Columns (added in `build_datamarts.py`)
+
+| Column | Formula | Description | Table |
+|---|---|---|---|
+| `goal_involvement_tournament` | total_goals_tournament + total_assists_tournament | Career total | dim_players |
+| `bmi` | weight/(height/100)² | Body Mass Index | dim_players |

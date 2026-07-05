@@ -155,7 +155,7 @@ make test
 
 | Layer | Tool |
 |---|---|
-| Language | Python 3.12 |
+| Language | Python ≥3.11 |
 | Data manipulation | pandas, numpy |
 | Visualisation | matplotlib, seaborn, plotly |
 | SQL | DuckDB (local) / BigQuery (cloud) |

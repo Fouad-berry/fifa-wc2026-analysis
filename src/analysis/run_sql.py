@@ -52,7 +52,10 @@ def run_queries(conn: duckdb.DuckDBPyConnection) -> None:
 
         for fragment in sql.split(";"):
             fragment = fragment.strip()
-            if not fragment or not STATEMENT_RE.match(fragment):
+            if not fragment:
+                continue
+            clean = re.sub(r"--.*", "", fragment).strip()
+            if not clean or not STATEMENT_RE.match(clean):
                 continue
             stmt = fragment + ";"
             try:

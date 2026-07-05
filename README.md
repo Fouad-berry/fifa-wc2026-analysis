@@ -62,7 +62,7 @@ fifa-wc2026-analysis/
 │
 ├── .github/workflows/ci.yml                        # CI pipeline
 ├── pyproject.toml                                  # Project metadata & tool config
-├── requirements.txt
+├── pyproject.toml
 ├── .gitignore
 └── README.md
 ```

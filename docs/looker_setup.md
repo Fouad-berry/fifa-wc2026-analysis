@@ -7,9 +7,7 @@
 ### 1. Run the full pipeline
 
 ```bash
-python src/transformation/clean_transform.py
-python src/datamarts/build_datamarts.py
-python src/analysis/metrics.py
+python cli.py pipeline
 ```
 
 ### 2. Upload to Google Drive

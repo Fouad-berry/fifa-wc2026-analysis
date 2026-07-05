@@ -39,7 +39,7 @@ def load_processed() -> pd.DataFrame:
 def build_dim_players(df: pd.DataFrame) -> pd.DataFrame:
     log.info("Building dim_players [yellow]…[/]")
     dim = (
-        df.sort_values("total_minutes_tournament", ascending=False)
+        df.sort_values(["total_minutes_tournament", "match_date"], ascending=[False, False])
         .drop_duplicates(subset=["player_id"])[
             [
                 "player_id",

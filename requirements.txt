@@ -14,7 +14,7 @@ ipykernel==6.29.4
 duckdb==0.10.3
 
 # Stats
-scipy==1.13.0
+scipy==1.17.1
 
 # Utilities
 rich==13.7.1

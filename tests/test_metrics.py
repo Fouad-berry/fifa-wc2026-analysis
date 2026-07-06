@@ -7,7 +7,7 @@ from src.analysis.metrics import run_all
 
 
 @patch("src.analysis.metrics.PROCESSED_PATH")
-def test_run_all_returns_empty_when_no_processed_file(mock_processed_path):
+def test_run_all_returns_empty_when_no_processed_file(mock_processed_path) -> None:
     mock_processed_path.exists.return_value = False
     result = run_all()
     assert result == {}
@@ -78,7 +78,17 @@ def metrics_datamarts(tmp_path):
     return tmp_path, processed_csv, player_csv, team_csv, stadium_csv
 
 
-def test_run_all_happy_path(metrics_datamarts, monkeypatch):
+@patch("src.analysis.metrics.PROCESSED_PATH")
+@patch("src.analysis.metrics.DM_BASE")
+def test_run_all_returns_empty_when_datamarts_missing(mock_dm_base, mock_processed_path) -> None:
+    mock_processed_path.exists.return_value = True
+    mock_dm_base.__truediv__.return_value.exists.return_value = False
+    with patch("pandas.read_csv", return_value=pd.DataFrame({"match_id": [1], "goals": [1], "player_id": [10], "team": ["A"], "stadium": ["X"], "yellow_cards": [0], "red_cards": [0], "player_rating": [7.0], "distance_covered_km": [10.0], "top_speed_kmh": [30.0], "match_date": pd.to_datetime(["2026-06-14"])})):
+        result = run_all()
+    assert result == {}
+
+
+def test_run_all_happy_path(metrics_datamarts, monkeypatch) -> None:
     tmp_path, processed_csv, _player_csv, _team_csv, _stadium_csv = metrics_datamarts
     monkeypatch.setattr("src.analysis.metrics.PROCESSED_PATH", processed_csv)
     monkeypatch.setattr("src.analysis.metrics.DM_BASE", tmp_path)

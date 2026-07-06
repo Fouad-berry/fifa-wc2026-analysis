@@ -9,10 +9,11 @@ import re
 
 import duckdb
 
-from src.logging_config import setup_logging
+from src.logging_config import get_console, setup_logging
 from src.paths import DM_BASE, QUERIES_DIR
 
 log = logging.getLogger(__name__)
+console = get_console()
 
 TABLES = {
     "dim_players": DM_BASE / "dm_players/player_dim.csv",
@@ -45,9 +46,9 @@ def run_queries(conn: duckdb.DuckDBPyConnection) -> None:
         return
 
     for sql_file in sql_files:
-        print(f"\n{'=' * 60}")
-        print(f"  Query: {sql_file.name}")
-        print(f"{'=' * 60}")
+        console.print(f"\n{'=' * 60}")
+        console.print(f"  Query: {sql_file.name}")
+        console.print(f"{'=' * 60}")
         sql = sql_file.read_text()
 
         for fragment in sql.split(";"):
@@ -61,9 +62,9 @@ def run_queries(conn: duckdb.DuckDBPyConnection) -> None:
             try:
                 result = conn.execute(stmt).fetchdf()
                 if not result.empty:
-                    print(result.to_string(index=False))
+                    console.print(result.to_string(index=False))
                 else:
-                    print("(empty result)")
+                    console.print("(empty result)")
             except Exception as e:
                 log.error("Error running query from %s: %s", sql_file.name, e)
 

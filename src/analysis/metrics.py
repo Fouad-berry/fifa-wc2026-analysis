@@ -8,16 +8,17 @@ import logging
 
 import pandas as pd
 
-from src.logging_config import setup_logging
+from src.logging_config import get_console, setup_logging
 from src.paths import DM_BASE, PROCESSED_PATH
 
 log = logging.getLogger(__name__)
+console = get_console()
 
 
 def run_all() -> dict:
     if not PROCESSED_PATH.exists():
         log.error("Processed file not found at %s", PROCESSED_PATH)
-        print("Run 'python src/transformation/clean_transform.py' first.")
+        console.print("Run 'python src/transformation/clean_transform.py' first.")
         return {}
 
     df = pd.read_csv(PROCESSED_PATH, parse_dates=["match_date"])
@@ -55,30 +56,30 @@ def run_all() -> dict:
         else {"stadium": "N/A", "city": "", "goals_per_match": 0.0}
     )
 
-    print("\n" + "=" * 52)
-    print("⚽  FIFA WC 2026 — KEY METRICS SUMMARY")
-    print("=" * 52)
-    print(f"Total records:             {len(df):>10,}")
-    print(f"Unique players:            {df['player_id'].nunique():>10,}")
-    print(f"Unique matches:            {df['match_id'].nunique():>10,}")
-    print(f"Participating nations:     {df['team'].nunique():>10,}")
-    print(f"Host stadiums:             {df['stadium'].nunique():>10,}")
-    print()
-    print(f"Total goals scored:        {total_goals:>10,}")
-    print(f"Avg goals per match:       {avg_goals_per_match:>10.2f}")
-    print(f"Total yellow cards:        {int(df['yellow_cards'].sum()):>10,}")
-    print(f"Total red cards:            {int(df['red_cards'].sum()):>10,}")
-    print()
-    print(f"Avg player rating:         {df['player_rating'].mean():>10.2f}")
-    print(f"Avg distance covered:      {df['distance_covered_km'].mean():>9.1f} km")
-    print(f"Avg top speed:             {df['top_speed_kmh'].mean():>9.1f} km/h")
-    print()
-    print(
+    console.print("\n" + "=" * 52)
+    console.print("⚽  FIFA WC 2026 — KEY METRICS SUMMARY")
+    console.print("=" * 52)
+    console.print(f"Total records:             {len(df):>10,}")
+    console.print(f"Unique players:            {df['player_id'].nunique():>10,}")
+    console.print(f"Unique matches:            {df['match_id'].nunique():>10,}")
+    console.print(f"Participating nations:     {df['team'].nunique():>10,}")
+    console.print(f"Host stadiums:             {df['stadium'].nunique():>10,}")
+    console.print()
+    console.print(f"Total goals scored:        {total_goals:>10,}")
+    console.print(f"Avg goals per match:       {avg_goals_per_match:>10.2f}")
+    console.print(f"Total yellow cards:        {int(df['yellow_cards'].sum()):>10,}")
+    console.print(f"Total red cards:            {int(df['red_cards'].sum()):>10,}")
+    console.print()
+    console.print(f"Avg player rating:         {df['player_rating'].mean():>10.2f}")
+    console.print(f"Avg distance covered:      {df['distance_covered_km'].mean():>9.1f} km")
+    console.print(f"Avg top speed:             {df['top_speed_kmh'].mean():>9.1f} km/h")
+    console.print()
+    console.print(
         f"Top scorer:                {top_scorer['player_name']} ({top_scorer['team']}) "
         f"— {int(top_scorer['total_goals_tournament'])} goals"
     )
-    print(f"Most goals (team):         {top_team['team']} — {int(top_team['total_goals'])} goals")
-    print(
+    console.print(f"Most goals (team):         {top_team['team']} — {int(top_team['total_goals'])} goals")
+    console.print(
         f"Most goals/match stadium:  {best_stadium['stadium']} "
         f"({best_stadium['city']}) — {best_stadium['goals_per_match']:.1f} goals/match"
     )

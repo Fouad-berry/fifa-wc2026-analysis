@@ -7,6 +7,7 @@ CLI dispatch logic for the FIFA WC 2026 pipeline.
 import logging
 
 import fire
+import pandas as pd
 
 from src.logging_config import get_console, setup_logging
 
@@ -15,11 +16,12 @@ log = logging.getLogger(__name__)
 console = get_console()
 
 
-def ingest() -> None:
+def ingest() -> pd.DataFrame:
     from src.ingestion.load_data import load_raw
 
     df = load_raw()
     console.print(f"[bold green]OK[/] — {len(df):,} rows, {len(df.columns)} columns")
+    return df
 
 
 def transform() -> None:
@@ -60,10 +62,7 @@ def sql() -> None:
 
 def pipeline() -> None:
     console.rule("[bold cyan]Step 1: Ingest[/]")
-    from src.ingestion.load_data import load_raw
-
-    df = load_raw()
-    console.print(f"[bold green]OK[/] — {len(df):,} rows, {len(df.columns)} columns")
+    df = ingest()
 
     console.rule("[bold cyan]Step 2: Transform[/]")
     from src.transformation.clean_transform import run_pipeline

@@ -18,10 +18,11 @@ import logging
 
 import pandas as pd
 
-from src.logging_config import get_progress, setup_logging
+from src.logging_config import get_console, get_progress, setup_logging
 from src.paths import DM_BASE, EXPORTS_DIR, PROCESSED_PATH
 
 log = logging.getLogger(__name__)
+console = get_console()
 
 
 def load_processed() -> pd.DataFrame:
@@ -448,16 +449,16 @@ def run_all() -> dict:
             table.to_csv(out, index=False)
         progress.update(task, advance=1)
 
-    print("\n" + "=" * 50)
-    print("⚽  DATAMART BUILD SUMMARY")
-    print("=" * 50)
-    print(f"Fact rows:      {len(df):>10,}")
-    print(f"Players:        {df['player_id'].nunique():>10,}")
-    print(f"Matches:        {df['match_id'].nunique():>10,}")
-    print(f"Teams:          {df['team'].nunique():>10,}")
-    print(f"Stadiums:       {df['stadium'].nunique():>10,}")
-    print(f"Datamarts:      {len(dimensions):>10}")
-    print(f"Export tables:  {len(exports):>10}")
+    console.print("\n" + "=" * 50)
+    console.print("⚽  DATAMART BUILD SUMMARY")
+    console.print("=" * 50)
+    console.print(f"Fact rows:      {len(df):>10,}")
+    console.print(f"Players:        {df['player_id'].nunique():>10,}")
+    console.print(f"Matches:        {df['match_id'].nunique():>10,}")
+    console.print(f"Teams:          {df['team'].nunique():>10,}")
+    console.print(f"Stadiums:       {df['stadium'].nunique():>10,}")
+    console.print(f"Datamarts:      {len(dimensions):>10}")
+    console.print(f"Export tables:  {len(exports):>10}")
 
     return {
         "fact_rows": len(df),

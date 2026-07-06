@@ -35,7 +35,7 @@ SPEED_MIN, SPEED_MAX = 0, 40
 AGE_BINS = [0, 20, 24, 28, 32, 40]
 AGE_LABELS = ["U21", "21-24", "25-28", "29-32", "33+"]
 
-MV_BINS = [-1, 5e6, 20e6, 60e6, 150e6, 1e9]
+MV_BINS = [-1, 5e6, 20e6, 60e6, 150e6, 1e9]  # -1 left edge catches zero market values
 MV_LABELS = ["<€5M", "€5-20M", "€20-60M", "€60-150M", "€150M+"]
 
 RTG_BINS = [0, 4, 6, 7.5, 9, 10]

@@ -35,14 +35,24 @@ def test_dispatch_all_keys_present() -> None:
 
 @pytest.fixture
 def mock_df() -> pd.DataFrame:
-    return pd.DataFrame({"goals": [1, 2], "match_id": [1, 1], "player_id": [10, 20], "team": ["A", "A"], "stadium": ["X", "X"]})
+    return pd.DataFrame(
+        {
+            "goals": [1, 2],
+            "match_id": [1, 1],
+            "player_id": [10, 20],
+            "team": ["A", "A"],
+            "stadium": ["X", "X"],
+        }
+    )
 
 
 @patch("src.cli_runner.datamarts")
 @patch("src.cli_runner.metrics")
 @patch("src.cli_runner.ingest")
 @patch("src.transformation.clean_transform.run_pipeline")
-def test_pipeline_runs_all_steps(mock_run_pipeline, mock_ingest, mock_metrics, mock_datamarts) -> None:
+def test_pipeline_runs_all_steps(
+    mock_run_pipeline, mock_ingest, mock_metrics, mock_datamarts
+) -> None:
     pipeline()
     mock_ingest.assert_called_once()
     mock_run_pipeline.assert_called_once()

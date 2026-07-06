@@ -160,5 +160,5 @@ def validate(df: pd.DataFrame) -> int:
 if __name__ == "__main__":
     setup_logging()
     df = load_raw()
-    print(df.shape)
-    print(df.dtypes)
+    log.info("Shape: %s", df.shape)
+    log.info("Dtypes:\n%s", df.dtypes)

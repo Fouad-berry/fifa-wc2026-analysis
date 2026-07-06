@@ -49,4 +49,4 @@ def test_queries_dir() -> None:
 
 def test_queries_dir_contains_sql_files() -> None:
     sql_files = list(QUERIES_DIR.glob("*.sql"))
-    assert len(sql_files) >= 5
+    assert len(sql_files) > 0

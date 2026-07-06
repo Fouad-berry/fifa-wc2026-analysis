@@ -1,7 +1,13 @@
 import numpy as np
 import pytest
 
-from src.transformation.clean_transform import STAGE_ORDER, clean, feature_engineering, save
+from src.transformation.clean_transform import (
+    SCORE_CLIP_COLS,
+    STAGE_ORDER,
+    clean,
+    feature_engineering,
+    save,
+)
 
 
 class TestClean:
@@ -40,20 +46,10 @@ class TestClean:
         assert result["stamina_score"].max() == 100.0
 
     def test_clips_all_score_cols(self, raw_df) -> None:
-        score_cols = [
-            "performance_score",
-            "offensive_contribution",
-            "defensive_contribution",
-            "possession_impact",
-            "pressure_resistance",
-            "creativity_score",
-            "consistency_score",
-            "clutch_performance_score",
-        ]
-        for c in score_cols:
+        for c in SCORE_CLIP_COLS:
             raw_df[c] = -50.0
         result = clean(raw_df)
-        for c in score_cols:
+        for c in SCORE_CLIP_COLS:
             assert result[c].min() >= 0.0, f"{c} not clipped above 0"
 
 

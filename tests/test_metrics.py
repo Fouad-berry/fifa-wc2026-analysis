@@ -83,7 +83,24 @@ def metrics_datamarts(tmp_path):
 def test_run_all_returns_empty_when_datamarts_missing(mock_dm_base, mock_processed_path) -> None:
     mock_processed_path.exists.return_value = True
     mock_dm_base.__truediv__.return_value.exists.return_value = False
-    with patch("pandas.read_csv", return_value=pd.DataFrame({"match_id": [1], "goals": [1], "player_id": [10], "team": ["A"], "stadium": ["X"], "yellow_cards": [0], "red_cards": [0], "player_rating": [7.0], "distance_covered_km": [10.0], "top_speed_kmh": [30.0], "match_date": pd.to_datetime(["2026-06-14"])})):
+    with patch(
+        "pandas.read_csv",
+        return_value=pd.DataFrame(
+            {
+                "match_id": [1],
+                "goals": [1],
+                "player_id": [10],
+                "team": ["A"],
+                "stadium": ["X"],
+                "yellow_cards": [0],
+                "red_cards": [0],
+                "player_rating": [7.0],
+                "distance_covered_km": [10.0],
+                "top_speed_kmh": [30.0],
+                "match_date": pd.to_datetime(["2026-06-14"]),
+            }
+        ),
+    ):
         result = run_all()
     assert result == {}
 

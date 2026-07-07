@@ -1,4 +1,4 @@
-.PHONY: install clean lint format test run pipeline all cli-all
+.PHONY: install clean lint format typecheck test run pipeline all cli-all
 
 PYTHON = python
 PYTHONPATH = .
@@ -20,6 +20,9 @@ format:
 	black --line-length=100 src/ tests/
 	isort --profile black --line-length=100 src/ tests/
 
+typecheck:
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m mypy src/ tests/
+
 test:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m pytest tests/ -v --cov=src/ --cov-report=term
 
@@ -30,4 +33,4 @@ pipeline: cli-all
 cli-all:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) cli.py all
 
-all: lint test pipeline
+all: lint typecheck test pipeline

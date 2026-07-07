@@ -35,8 +35,10 @@ fifa-wc2026-analysis/
 │
 ├── src/
 │   ├── __init__.py
+│   ├── __main__.py                                 # python -m src support
 │   ├── logging_config.py                           # Centralised logging setup
 │   ├── paths.py                                    # Centralised path constants
+│   ├── cli_runner.py                               # Fire CLI dispatcher
 │   ├── ingestion/load_data.py                      # CSV loader & validator
 │   ├── transformation/clean_transform.py           # Cleaning & feature engineering
 │   ├── datamarts/build_datamarts.py                # Star-schema builder
@@ -62,7 +64,6 @@ fifa-wc2026-analysis/
 │
 ├── .github/workflows/ci.yml                        # CI pipeline
 ├── pyproject.toml                                  # Project metadata & tool config
-├── pyproject.toml
 ├── .gitignore
 └── README.md
 ```

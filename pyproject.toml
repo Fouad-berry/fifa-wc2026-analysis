@@ -33,6 +33,7 @@ dev = [
     "pytest-cov>=5.0",
     "jupyterlab>=4.2",
     "ipykernel>=6.29",
+    "mypy>=1.10",
 ]
 
 [project.scripts]
@@ -52,6 +53,14 @@ line_length = 100
 [tool.flake8]
 max-line-length = 100
 extend-ignore = ["E203", "W503"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+ignore_missing_imports = true
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
 
 [tool.pytest.ini_options]
 minversion = "8.0"

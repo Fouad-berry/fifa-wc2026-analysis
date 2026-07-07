@@ -4,15 +4,12 @@ cli_runner.py
 CLI dispatch logic for the FIFA WC 2026 pipeline.
 """
 
-import logging
-
 import fire
 import pandas as pd
 
 from src.logging_config import get_console, setup_logging
 
 setup_logging()
-log = logging.getLogger(__name__)
 console = get_console()
 
 

@@ -14,7 +14,6 @@ from src.paths import RAW_PATH
 log = logging.getLogger(__name__)
 
 VALID_POSITIONS = {"Goalkeeper", "Defender", "Midfielder", "Forward"}
-VALID_FEET = {"Left", "Right"}
 VALID_STAGES = {
     "Group Stage",
     "Round of 32",

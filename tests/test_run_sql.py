@@ -1,3 +1,5 @@
+import re
+
 from src.analysis.run_sql import STATEMENT_RE
 
 
@@ -29,8 +31,6 @@ class TestStatementRegex:
 
     def test_skips_comment_lines(self) -> None:
         sql = "-- comment\nSELECT 1;"
-        import re
-
         fragments = [re.sub(r"--.*", "", f).strip() for f in sql.split(";") if f.strip()]
         matches = [f for f in fragments if STATEMENT_RE.match(f)]
         assert len(matches) == 1

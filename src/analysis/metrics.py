@@ -76,10 +76,10 @@ def run_all() -> dict:
     console.print()
     console.print(
         f"Top scorer:                {top_scorer['player_name']} ({top_scorer['team']}) "
-        f"— {int(top_scorer['total_goals_tournament'])} goals"
+        f"— {top_scorer['total_goals_tournament']} goals"
     )
     console.print(
-        f"Most goals (team):         {top_team['team']} — {int(top_team['total_goals'])} goals"
+        f"Most goals (team):         {top_team['team']} — {top_team['total_goals']} goals"
     )
     console.print(
         f"Most goals/match stadium:  {best_stadium['stadium']} "

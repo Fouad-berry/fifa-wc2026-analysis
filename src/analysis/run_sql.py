@@ -35,7 +35,8 @@ def load_tables(conn: duckdb.DuckDBPyConnection) -> None:
         conn.execute(
             f"CREATE OR REPLACE TABLE {table} AS SELECT * FROM read_csv_auto('{safe_path}')"
         )
-        count = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+        row = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()
+        count = row[0] if row else 0
         log.info("Loaded %s (%s rows)", table, f"{count:,}")
 
 

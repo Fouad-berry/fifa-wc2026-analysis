@@ -59,3 +59,34 @@ def test_run_all_profiles_numeric_columns(mock_path) -> None:
     mock_path.__fspath__ = MagicMock(return_value="/fake/path")
     with patch("pandas.read_csv", return_value=df):
         run_all()
+
+
+@patch("src.analysis.profiling.PROCESSED_PATH")
+def test_run_all_skips_columns_with_few_values(mock_path) -> None:
+    df = pd.DataFrame(
+        {
+            "rating": [1.0, 2.0, 3.0],
+            "sparse": [1.0, float("nan"), float("nan")],
+            "name": ["A", "B", "C"],
+        }
+    )
+    mock_path.exists.return_value = True
+    mock_path.__fspath__ = MagicMock(return_value="/fake/path")
+    with patch("pandas.read_csv", return_value=df):
+        run_all()
+
+
+@patch("src.analysis.profiling.PROCESSED_PATH")
+def test_run_all_skew_flag(mock_path) -> None:
+    import numpy as np
+    np.random.seed(42)
+    df = pd.DataFrame(
+        {
+            "rating": [1.0, 1.0, 1.0, 1.0, 100.0],
+            "goals": [0, 1, 0, 2, 0],
+        }
+    )
+    mock_path.exists.return_value = True
+    mock_path.__fspath__ = MagicMock(return_value="/fake/path")
+    with patch("pandas.read_csv", return_value=df):
+        run_all()

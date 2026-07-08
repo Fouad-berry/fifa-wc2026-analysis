@@ -102,6 +102,23 @@ def test_transform_dispatches(mock_run) -> None:
     mock_run.assert_called_once()
 
 
+@patch("src.analysis.metrics.run_all")
+def test_metrics_dispatches(mock_run) -> None:
+    metrics()
+    mock_run.assert_called_once()
+
+
+def test_main_registers_commands() -> None:
+    from src.cli_runner import main
+    with patch("src.cli_runner.fire.Fire") as mock_fire:
+        main()
+        assert mock_fire.called
+        cmd_dict = mock_fire.call_args[0][0]
+        expected = {"ingest", "transform", "datamarts", "metrics",
+                    "visualize", "profile", "sql", "pipeline", "all"}
+        assert set(cmd_dict.keys()) == expected
+
+
 @patch("src.ingestion.load_data.load_raw")
 def test_ingest_returns_dataframe(mock_load_raw, mock_df) -> None:
     mock_load_raw.return_value = mock_df

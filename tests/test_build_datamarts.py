@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock
+
 import pytest
 
 from src.datamarts.build_datamarts import (
@@ -8,6 +10,7 @@ from src.datamarts.build_datamarts import (
     build_exports,
     build_fact_performance,
     load_processed,
+    run_all,
 )
 
 
@@ -151,3 +154,53 @@ class TestLoadProcessed:
         )
         with pytest.raises(FileNotFoundError):
             load_processed()
+
+
+class TestRunAll:
+    def test_run_all_creates_files_and_returns_summary(
+        self, clean_df, monkeypatch, tmp_path
+    ):
+        processed_csv = tmp_path / "wc2026_clean.csv"
+        clean_df.to_csv(processed_csv, index=False)
+
+        dm_base = tmp_path / "datamarts"
+        exports_dir = tmp_path / "exports"
+
+        monkeypatch.setattr("src.datamarts.build_datamarts.PROCESSED_PATH", processed_csv)
+        monkeypatch.setattr("src.datamarts.build_datamarts.DM_BASE", dm_base)
+        monkeypatch.setattr("src.datamarts.build_datamarts.EXPORTS_DIR", exports_dir)
+
+        mock_progress = MagicMock()
+        mock_progress.add_task.return_value = 0
+        mock_progress.__enter__.return_value = mock_progress
+        monkeypatch.setattr(
+            "src.datamarts.build_datamarts.get_progress",
+            lambda: mock_progress,
+        )
+
+        result = run_all()
+
+        assert dm_base.joinpath("dm_players/player_dim.csv").exists()
+        assert dm_base.joinpath("dm_matches/match_dim.csv").exists()
+        assert dm_base.joinpath("dm_teams/team_dim.csv").exists()
+        assert dm_base.joinpath("dm_stadiums/stadium_dim.csv").exists()
+        assert dm_base.joinpath("dm_performance/fact_performance.csv").exists()
+
+        assert exports_dir.joinpath("top_scorers.csv").exists()
+        assert exports_dir.joinpath("agg_by_position.csv").exists()
+        assert exports_dir.joinpath("agg_by_stage.csv").exists()
+        assert exports_dir.joinpath("agg_team_attack.csv").exists()
+        assert exports_dir.joinpath("agg_team_defense.csv").exists()
+        assert exports_dir.joinpath("agg_physical.csv").exists()
+        assert exports_dir.joinpath("agg_goalkeepers.csv").exists()
+        assert exports_dir.joinpath("knockout_performers.csv").exists()
+        assert exports_dir.joinpath("agg_stadiums.csv").exists()
+        assert exports_dir.joinpath("agg_age_performance.csv").exists()
+
+        assert result["fact_rows"] == len(clean_df)
+        assert result["players"] == clean_df["player_id"].nunique()
+        assert result["matches"] == clean_df["match_id"].nunique()
+        assert result["teams"] == clean_df["team"].nunique()
+        assert result["stadiums"] == clean_df["stadium"].nunique()
+        assert result["datamarts"] == 5
+        assert result["export_tables"] == 10

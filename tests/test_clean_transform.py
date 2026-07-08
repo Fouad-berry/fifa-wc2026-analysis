@@ -6,6 +6,7 @@ from src.transformation.clean_transform import (
     STAGE_ORDER,
     clean,
     feature_engineering,
+    run_pipeline,
     save,
 )
 
@@ -150,3 +151,31 @@ class TestSave:
         monkeypatch.setattr("src.transformation.clean_transform.PROCESSED_PATH", fake_path)
         save(clean_df)
         assert fake_path.exists()
+
+
+class TestRunPipeline:
+    def test_run_pipeline_with_dataframe_saves_and_returns(self, raw_df, tmp_path, monkeypatch):
+        fake_path = tmp_path / "processed" / "test.csv"
+        monkeypatch.setattr("src.transformation.clean_transform.PROCESSED_PATH", fake_path)
+        result = run_pipeline(raw_df)
+        assert fake_path.exists()
+        assert len(result) == len(raw_df)
+        assert "shot_efficiency" in result.columns
+        assert "stage_order" in result.columns
+
+    def test_run_pipeline_loads_clean_save_chain(self, raw_df, tmp_path, monkeypatch):
+        fake_path = tmp_path / "processed" / "test.csv"
+        monkeypatch.setattr("src.transformation.clean_transform.PROCESSED_PATH", fake_path)
+        result = run_pipeline(raw_df)
+        assert "club_name" in result.columns
+        assert result["club_name"].iloc[0] == raw_df["club_name"].iloc[0].strip()
+
+
+class TestEdgeCases:
+    def test_unmapped_stage_logs_warning(self, raw_df, caplog):
+        import logging
+        raw_df["tournament_stage"] = "Unknown Stage"
+        df = clean(raw_df)
+        with caplog.at_level(logging.WARNING):
+            feature_engineering(df)
+            assert "unmapped tournament_stage" in caplog.text

@@ -1,3 +1,4 @@
+from pathlib import Path
 from unittest.mock import patch
 
 import duckdb
@@ -88,6 +89,17 @@ class TestLoadTables:
         expected = {"dim_players", "dim_matches", "dim_teams", "dim_stadiums", "fact_performance"}
         assert expected.issubset(set(tables["table_name"]))
 
+    def test_skips_missing_table(self, conn, monkeypatch):
+        monkeypatch.setattr("src.analysis.run_sql.TABLES", {
+            "dim_players": Path("/nonexistent/path.csv"),
+        })
+        with patch("src.analysis.run_sql.log") as mock_log:
+            load_tables(conn)
+            mock_log.warning.assert_called_once()
+            args = mock_log.warning.call_args[0]
+            assert "Skipping" in args[0]
+            assert args[1] == "dim_players"
+
     def test_data_queryable(self, conn, datamart_csvs, monkeypatch):
         monkeypatch.setattr("src.analysis.run_sql.TABLES", {
             "dim_players": datamart_csvs / "dm_players/player_dim.csv",
@@ -133,6 +145,27 @@ class TestRunQueries:
         with patch("src.analysis.run_sql.log") as mock_log:
             run_queries(conn)
             mock_log.warning.assert_called_once()
+
+    def test_logs_error_on_bad_sql(self, conn, datamart_csvs, monkeypatch, tmp_path):
+        monkeypatch.setattr("src.analysis.run_sql.TABLES", {})
+        monkeypatch.setattr("src.analysis.run_sql.QUERIES_DIR", tmp_path)
+        sql_file = tmp_path / "bad.sql"
+        sql_file.write_text("SELECT * FROM nonexistent_table;")
+        with patch("src.analysis.run_sql.log") as mock_log:
+            run_queries(conn)
+            assert mock_log.error.called
+            args, kwargs = mock_log.error.call_args
+            assert "Error running query from" in args[0]
+            assert "bad.sql" in str(args[1])
+
+    def test_prints_empty_result(self, conn, datamart_csvs, monkeypatch, tmp_path):
+        monkeypatch.setattr("src.analysis.run_sql.TABLES", {})
+        monkeypatch.setattr("src.analysis.run_sql.QUERIES_DIR", tmp_path)
+        sql_file = tmp_path / "empty.sql"
+        sql_file.write_text("SELECT * FROM (VALUES (1)) AS t WHERE 1=0;")
+        with patch("src.analysis.run_sql.console") as mock_console:
+            run_queries(conn)
+            mock_console.print.assert_any_call("(empty result)")
 
 
 class TestRunAll:

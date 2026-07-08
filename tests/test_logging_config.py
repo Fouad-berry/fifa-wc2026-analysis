@@ -1,6 +1,8 @@
 import logging
 
-from rich.progress import Progress
+from unittest.mock import MagicMock
+
+from rich.progress import Progress, Task
 
 from src.logging_config import ElapsedColumn, get_console, get_progress, setup_logging
 
@@ -26,3 +28,19 @@ def test_get_progress() -> None:
 def test_elapsed_column_type() -> None:
     col = ElapsedColumn()
     assert col is not None
+
+
+def test_elapsed_column_render_empty_when_no_elapsed() -> None:
+    col = ElapsedColumn()
+    task = MagicMock(spec=Task)
+    task.elapsed = None
+    result = col.render(task)
+    assert result == ""
+
+
+def test_elapsed_column_render_returns_seconds() -> None:
+    col = ElapsedColumn()
+    task = MagicMock(spec=Task)
+    task.elapsed = 3661.5
+    result = col.render(task)
+    assert result == "1:01:01"

@@ -21,7 +21,7 @@ format:
 	isort --profile black --line-length=100 src/ tests/
 
 typecheck:
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m mypy src/ tests/
+	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m mypy src/ tests/ --no-error-summary
 
 test:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m pytest tests/ -v --cov=src/ --cov-report=term

@@ -35,8 +35,14 @@ jobs:
       - name: Check imports with isort
         run: isort --check-only --profile black --line-length=100 src/ tests/
 
+      - name: Static type checking with mypy
+        run: mypy src/ tests/
+
       - name: Smoke test — CLI help
         run: python cli.py --help
+
+      - name: Smoke test — python -m src
+        run: python -m src --help
 
       - name: Smoke test — all module imports
         run: python -c "from src.analysis.run_sql import STATEMENT_RE; from src.analysis.metrics import run_all; from src.analysis.viz import run_all as viz_all; from src.analysis.profiling import run_all as profile_all; from src.datamarts.build_datamarts import run_all as dm_all; print('All imports OK')"

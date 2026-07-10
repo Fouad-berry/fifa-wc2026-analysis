@@ -8,6 +8,7 @@ version = "1.0.0"
 description = "FIFA World Cup 2026 — Player Performance Analysis"
 readme = "README.md"
 license = {text = "MIT"}
+keywords = ["fifa", "world-cup", "football", "data-analysis", "sports-analytics"]
 authors = [
     {name = "Fouad MOUTAIROU"},
 ]
@@ -19,6 +20,10 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
+
+[project.urls]
+Source = "https://github.com/Fouad-berry/fifa-wc2026-analysis"
+Tracker = "https://github.com/Fouad-berry/fifa-wc2026-analysis/issues"
 
 requires-python = ">=3.11"
 dependencies = [

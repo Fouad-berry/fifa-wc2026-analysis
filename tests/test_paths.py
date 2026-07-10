@@ -1,3 +1,4 @@
+from src import __version__ as src_version
 from src.paths import (
     DM_BASE,
     EXPORTS_DIR,
@@ -50,3 +51,28 @@ def test_queries_dir() -> None:
 def test_queries_dir_contains_sql_files() -> None:
     sql_files = list(QUERIES_DIR.glob("*.sql"))
     assert len(sql_files) > 0
+
+
+def test_version_is_string() -> None:
+    assert isinstance(src_version, str)
+    assert src_version.count(".") >= 2
+
+
+def test_main_dot_py_runs_without_error() -> None:
+    import subprocess
+    result = subprocess.run(
+        ["python", "src/__main__.py", "--help"],
+        capture_output=True, text=True, cwd=PROJECT_ROOT,
+    )
+    assert result.returncode == 0
+    assert len(result.stderr) > 0
+
+
+def test_cli_dot_py_version() -> None:
+    import subprocess
+    result = subprocess.run(
+        ["python", "cli.py", "--version"],
+        capture_output=True, text=True, cwd=PROJECT_ROOT,
+    )
+    assert result.returncode == 0
+    assert result.stdout.strip() == "1.0.0"

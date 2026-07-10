@@ -4,6 +4,8 @@ cli_runner.py
 CLI dispatch logic for the FIFA WC 2026 pipeline.
 """
 
+import sys
+
 import fire
 import pandas as pd
 
@@ -85,6 +87,10 @@ def all_cmds() -> None:
 
 
 def main() -> None:
+    if "--version" in sys.argv or "-V" in sys.argv:
+        from src import __version__
+        print(__version__)
+        return
     fire.Fire(
         {
             "ingest": ingest,

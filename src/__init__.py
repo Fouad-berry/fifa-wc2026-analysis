@@ -1,3 +1,10 @@
+from importlib.metadata import version as _version
+
+try:
+    __version__ = _version("fifa-wc2026-analysis")
+except Exception:
+    __version__ = "1.0.0"
+
 from src.paths import (
     DM_BASE,
     EXPORTS_DIR,
@@ -10,6 +17,7 @@ from src.paths import (
 from src.logging_config import get_console, setup_logging
 
 __all__ = [
+    "__version__",
     "DM_BASE",
     "EXPORTS_DIR",
     "FIGS_DIR",

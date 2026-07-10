@@ -119,6 +119,14 @@ def test_main_registers_commands() -> None:
         assert set(cmd_dict.keys()) == expected
 
 
+def test_main_handles_version_flag(monkeypatch) -> None:
+    from src.cli_runner import main
+    monkeypatch.setattr("sys.argv", ["cli.py", "--version"])
+    with patch("builtins.print") as mock_print:
+        main()
+        mock_print.assert_called_once()
+
+
 @patch("src.ingestion.load_data.load_raw")
 def test_ingest_returns_dataframe(mock_load_raw, mock_df) -> None:
     mock_load_raw.return_value = mock_df

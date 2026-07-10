@@ -13,6 +13,7 @@ Usage:
     python cli.py profile         # Statistical profiling
     python cli.py sql             # Run SQL queries via DuckDB
     python cli.py all             # Run everything
+    python cli.py --version       # Show version
 """
 
 import sys
@@ -23,4 +24,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 from src.cli_runner import main  # noqa: E402
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nAborted.")
+        sys.exit(1)

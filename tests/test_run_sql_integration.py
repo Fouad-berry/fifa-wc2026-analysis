@@ -174,9 +174,10 @@ class TestRunQueries:
         sql_file.write_text("SELECT 1 AS a;\nVALUES (1);\nSELECT 2 AS b;")
         with patch("src.analysis.run_sql.console") as mock_console:
             run_queries(conn)
-            printed = [c[0][0] for c in mock_console.print.call_args_list if c[0]]
-            assert "a" in printed
-            assert "b" in printed
+            printed = [str(c[0][0]) for c in mock_console.print.call_args_list if c[0]]
+            headers = [line.strip() for p in printed for line in p.split("\n") if line.strip()]
+            assert "a" in headers
+            assert "b" in headers
 
 
 class TestRunAll:

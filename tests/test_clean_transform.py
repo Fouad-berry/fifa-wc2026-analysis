@@ -182,6 +182,7 @@ class TestRunPipeline:
 class TestEdgeCases:
     def test_unmapped_stage_logs_warning(self, raw_df, caplog):
         import logging
+
         raw_df["tournament_stage"] = "Unknown Stage"
         df = clean(raw_df)
         with caplog.at_level(logging.WARNING):

@@ -1,4 +1,3 @@
-import importlib
 import sys
 
 from src import __version__ as src_version
@@ -63,9 +62,12 @@ def test_version_is_string() -> None:
 
 def test_main_dot_py_runs_without_error() -> None:
     import subprocess
+
     result = subprocess.run(
         [sys.executable, "src/__main__.py", "--help"],
-        capture_output=True, text=True, cwd=PROJECT_ROOT,
+        capture_output=True,
+        text=True,
+        cwd=PROJECT_ROOT,
     )
     assert result.returncode == 0
     assert len(result.stderr) > 0
@@ -73,9 +75,12 @@ def test_main_dot_py_runs_without_error() -> None:
 
 def test_cli_dot_py_version() -> None:
     import subprocess
+
     result = subprocess.run(
         [sys.executable, "cli.py", "--version"],
-        capture_output=True, text=True, cwd=PROJECT_ROOT,
+        capture_output=True,
+        text=True,
+        cwd=PROJECT_ROOT,
     )
     assert result.returncode == 0
     assert result.stdout.strip() == "1.0.0"
@@ -83,14 +88,18 @@ def test_cli_dot_py_version() -> None:
 
 def test_version_fallback_when_package_not_installed() -> None:
     import subprocess
+
     result = subprocess.run(
         [
-            sys.executable, "-c",
+            sys.executable,
+            "-c",
             "import sys; sys.path.insert(0, '.'); "
             "import importlib; importlib.invalidate_caches(); "
             "from src import __version__; print(__version__)",
         ],
-        capture_output=True, text=True, cwd=PROJECT_ROOT,
+        capture_output=True,
+        text=True,
+        cwd=PROJECT_ROOT,
     )
     assert result.returncode == 0
     assert result.stdout.strip() == "1.0.0"
@@ -105,6 +114,7 @@ def test_version_fallback_on_import_error(monkeypatch) -> None:
     )
     importlib.reload(sys.modules["src"])
     from src import __version__
+
     assert __version__ == "1.0.0"
     monkeypatch.undo()
     importlib.reload(sys.modules["src"])

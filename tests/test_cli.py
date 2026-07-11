@@ -110,17 +110,28 @@ def test_metrics_dispatches(mock_run) -> None:
 
 def test_main_registers_commands() -> None:
     from src.cli_runner import main
+
     with patch("src.cli_runner.fire.Fire") as mock_fire:
         main()
         assert mock_fire.called
         cmd_dict = mock_fire.call_args[0][0]
-        expected = {"ingest", "transform", "datamarts", "metrics",
-                    "visualize", "profile", "sql", "pipeline", "all"}
+        expected = {
+            "ingest",
+            "transform",
+            "datamarts",
+            "metrics",
+            "visualize",
+            "profile",
+            "sql",
+            "pipeline",
+            "all",
+        }
         assert set(cmd_dict.keys()) == expected
 
 
 def test_main_handles_version_flag(monkeypatch) -> None:
     from src.cli_runner import main
+
     monkeypatch.setattr("sys.argv", ["cli.py", "--version"])
     with patch("builtins.print") as mock_print:
         main()

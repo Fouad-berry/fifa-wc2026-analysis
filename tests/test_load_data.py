@@ -59,6 +59,7 @@ class TestLoadRawEdgeCases:
         path = tmp_path / "bad_numeric.csv"
         raw_df.to_csv(path, index=False)
         import logging
+
         with caplog.at_level(logging.WARNING):
             load_raw(str(path))
         assert any("coerced to NaN" in msg for msg in caplog.messages)
@@ -69,6 +70,7 @@ class TestLoadRawEdgeCases:
         path = tmp_path / "multi_issue.csv"
         raw_df.to_csv(path, index=False)
         import logging
+
         with caplog.at_level(logging.WARNING):
             load_raw(str(path))
         assert any("issues" in msg for msg in caplog.messages)
@@ -79,6 +81,7 @@ class TestLoadRawEdgeCases:
         path = tmp_path / "bad_date.csv"
         raw_df.to_csv(path, index=False)
         import logging
+
         with caplog.at_level(logging.WARNING):
             load_raw(str(path))
         assert any("dates coerced to NaT" in msg for msg in caplog.messages)
@@ -106,6 +109,7 @@ class TestValidate:
     def test_null_values_warns(self, raw_df, caplog) -> None:
         raw_df.loc[0, "goals"] = float("nan")
         import logging
+
         with caplog.at_level(logging.WARNING):
             validate(raw_df)
         assert any("Null values" in msg for msg in caplog.messages)

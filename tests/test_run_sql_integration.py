@@ -75,13 +75,16 @@ def datamart_csvs(tmp_path):
 
 class TestLoadTables:
     def test_loads_all_tables(self, conn, datamart_csvs, monkeypatch):
-        monkeypatch.setattr("src.analysis.run_sql.TABLES", {
-            "dim_players": datamart_csvs / "dm_players/player_dim.csv",
-            "dim_matches": datamart_csvs / "dm_matches/match_dim.csv",
-            "dim_teams": datamart_csvs / "dm_teams/team_dim.csv",
-            "dim_stadiums": datamart_csvs / "dm_stadiums/stadium_dim.csv",
-            "fact_performance": datamart_csvs / "dm_performance/fact_performance.csv",
-        })
+        monkeypatch.setattr(
+            "src.analysis.run_sql.TABLES",
+            {
+                "dim_players": datamart_csvs / "dm_players/player_dim.csv",
+                "dim_matches": datamart_csvs / "dm_matches/match_dim.csv",
+                "dim_teams": datamart_csvs / "dm_teams/team_dim.csv",
+                "dim_stadiums": datamart_csvs / "dm_stadiums/stadium_dim.csv",
+                "fact_performance": datamart_csvs / "dm_performance/fact_performance.csv",
+            },
+        )
         load_tables(conn)
         tables = conn.execute(
             "SELECT table_name FROM information_schema.tables WHERE table_schema = 'main'"
@@ -90,9 +93,12 @@ class TestLoadTables:
         assert expected.issubset(set(tables["table_name"]))
 
     def test_skips_missing_table(self, conn, monkeypatch):
-        monkeypatch.setattr("src.analysis.run_sql.TABLES", {
-            "dim_players": Path("/nonexistent/path.csv"),
-        })
+        monkeypatch.setattr(
+            "src.analysis.run_sql.TABLES",
+            {
+                "dim_players": Path("/nonexistent/path.csv"),
+            },
+        )
         with patch("src.analysis.run_sql.log") as mock_log:
             load_tables(conn)
             mock_log.warning.assert_called_once()
@@ -101,13 +107,16 @@ class TestLoadTables:
             assert args[1] == "dim_players"
 
     def test_data_queryable(self, conn, datamart_csvs, monkeypatch):
-        monkeypatch.setattr("src.analysis.run_sql.TABLES", {
-            "dim_players": datamart_csvs / "dm_players/player_dim.csv",
-            "dim_matches": datamart_csvs / "dm_matches/match_dim.csv",
-            "dim_teams": datamart_csvs / "dm_teams/team_dim.csv",
-            "dim_stadiums": datamart_csvs / "dm_stadiums/stadium_dim.csv",
-            "fact_performance": datamart_csvs / "dm_performance/fact_performance.csv",
-        })
+        monkeypatch.setattr(
+            "src.analysis.run_sql.TABLES",
+            {
+                "dim_players": datamart_csvs / "dm_players/player_dim.csv",
+                "dim_matches": datamart_csvs / "dm_matches/match_dim.csv",
+                "dim_teams": datamart_csvs / "dm_teams/team_dim.csv",
+                "dim_stadiums": datamart_csvs / "dm_stadiums/stadium_dim.csv",
+                "fact_performance": datamart_csvs / "dm_performance/fact_performance.csv",
+            },
+        )
         load_tables(conn)
         result = conn.execute(
             "SELECT player_name, goals FROM fact_performance f "
@@ -120,13 +129,16 @@ class TestLoadTables:
 
 class TestRunQueries:
     def test_executes_sql_files(self, conn, datamart_csvs, monkeypatch, tmp_path):
-        monkeypatch.setattr("src.analysis.run_sql.TABLES", {
-            "dim_players": datamart_csvs / "dm_players/player_dim.csv",
-            "dim_matches": datamart_csvs / "dm_matches/match_dim.csv",
-            "dim_teams": datamart_csvs / "dm_teams/team_dim.csv",
-            "dim_stadiums": datamart_csvs / "dm_stadiums/stadium_dim.csv",
-            "fact_performance": datamart_csvs / "dm_performance/fact_performance.csv",
-        })
+        monkeypatch.setattr(
+            "src.analysis.run_sql.TABLES",
+            {
+                "dim_players": datamart_csvs / "dm_players/player_dim.csv",
+                "dim_matches": datamart_csvs / "dm_matches/match_dim.csv",
+                "dim_teams": datamart_csvs / "dm_teams/team_dim.csv",
+                "dim_stadiums": datamart_csvs / "dm_stadiums/stadium_dim.csv",
+                "fact_performance": datamart_csvs / "dm_performance/fact_performance.csv",
+            },
+        )
         monkeypatch.setattr("src.analysis.run_sql.QUERIES_DIR", tmp_path)
         load_tables(conn)
 
@@ -181,16 +193,17 @@ class TestRunQueries:
 
 
 class TestRunAll:
-    def test_run_all_creates_connection_and_loads(
-        self, datamart_csvs, monkeypatch, tmp_path
-    ):
-        monkeypatch.setattr("src.analysis.run_sql.TABLES", {
-            "dim_players": datamart_csvs / "dm_players/player_dim.csv",
-            "dim_matches": datamart_csvs / "dm_matches/match_dim.csv",
-            "dim_teams": datamart_csvs / "dm_teams/team_dim.csv",
-            "dim_stadiums": datamart_csvs / "dm_stadiums/stadium_dim.csv",
-            "fact_performance": datamart_csvs / "dm_performance/fact_performance.csv",
-        })
+    def test_run_all_creates_connection_and_loads(self, datamart_csvs, monkeypatch, tmp_path):
+        monkeypatch.setattr(
+            "src.analysis.run_sql.TABLES",
+            {
+                "dim_players": datamart_csvs / "dm_players/player_dim.csv",
+                "dim_matches": datamart_csvs / "dm_matches/match_dim.csv",
+                "dim_teams": datamart_csvs / "dm_teams/team_dim.csv",
+                "dim_stadiums": datamart_csvs / "dm_stadiums/stadium_dim.csv",
+                "fact_performance": datamart_csvs / "dm_performance/fact_performance.csv",
+            },
+        )
         monkeypatch.setattr("src.analysis.run_sql.QUERIES_DIR", tmp_path)
 
         sql_file = tmp_path / "test.sql"
@@ -198,9 +211,7 @@ class TestRunAll:
 
         run_all()
 
-    def test_run_all_no_sql_files(
-        self, datamart_csvs, monkeypatch
-    ):
+    def test_run_all_no_sql_files(self, datamart_csvs, monkeypatch):
         monkeypatch.setattr("src.analysis.run_sql.TABLES", {})
         monkeypatch.setattr("src.analysis.run_sql.QUERIES_DIR", datamart_csvs / "no_sql")
         run_all()

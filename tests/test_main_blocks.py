@@ -7,7 +7,8 @@ from src.paths import PROJECT_ROOT
 def _run_as_main(module: str) -> int:
     result = subprocess.run(
         [sys.executable, "-m", module],
-        capture_output=True, text=True,
+        capture_output=True,
+        text=True,
         cwd=PROJECT_ROOT,
     )
     return result.returncode
@@ -29,7 +30,8 @@ class TestMainBlocks:
     def test_cli_runner_main_block(self) -> None:
         result = subprocess.run(
             [sys.executable, "-m", "src.cli_runner", "--help"],
-            capture_output=True, text=True,
+            capture_output=True,
+            text=True,
             cwd=PROJECT_ROOT,
         )
         assert result.returncode == 0

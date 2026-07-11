@@ -157,9 +157,7 @@ class TestLoadProcessed:
 
 
 class TestRunAll:
-    def test_run_all_creates_files_and_returns_summary(
-        self, clean_df, monkeypatch, tmp_path
-    ):
+    def test_run_all_creates_files_and_returns_summary(self, clean_df, monkeypatch, tmp_path):
         processed_csv = tmp_path / "wc2026_clean.csv"
         clean_df.to_csv(processed_csv, index=False)
 

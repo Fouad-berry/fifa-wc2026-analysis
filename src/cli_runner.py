@@ -89,6 +89,7 @@ def all_cmds() -> None:
 def main() -> None:
     if "--version" in sys.argv or "-V" in sys.argv:
         from src import __version__
+
         print(__version__)
         return
     fire.Fire(

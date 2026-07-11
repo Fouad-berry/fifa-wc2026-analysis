@@ -79,6 +79,7 @@ def test_run_all_skips_columns_with_few_values(mock_path) -> None:
 @patch("src.analysis.profiling.PROCESSED_PATH")
 def test_run_all_skew_flag(mock_path) -> None:
     import numpy as np
+
     np.random.seed(42)
     df = pd.DataFrame(
         {

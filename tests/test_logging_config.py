@@ -1,5 +1,4 @@
 import logging
-
 from unittest.mock import MagicMock
 
 from rich.progress import Progress, Task

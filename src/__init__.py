@@ -5,6 +5,7 @@ try:
 except Exception:
     __version__ = "1.0.0"
 
+from src.logging_config import get_console, setup_logging
 from src.paths import (
     DM_BASE,
     EXPORTS_DIR,
@@ -14,7 +15,6 @@ from src.paths import (
     QUERIES_DIR,
     RAW_PATH,
 )
-from src.logging_config import get_console, setup_logging
 
 __all__ = [
     "__version__",

@@ -199,8 +199,14 @@ class TestPhysicalCorrelation:
 
 class TestRunAll:
     def test_run_all_creates_all_figures(
-        self, top_scorers_csv, agg_by_stage_csv, agg_by_position_csv,
-        team_dim_csv, processed_csv, monkeypatch, tmp_path
+        self,
+        top_scorers_csv,
+        agg_by_stage_csv,
+        agg_by_position_csv,
+        team_dim_csv,
+        processed_csv,
+        monkeypatch,
+        tmp_path,
     ):
         monkeypatch.setattr("src.analysis.viz.EXPORTS_DIR", tmp_path)
         monkeypatch.setattr("src.analysis.viz.DM_BASE", tmp_path)
@@ -219,8 +225,13 @@ class TestRunAll:
             assert (tmp_path / f).exists(), f"Missing {f}"
 
     def test_run_all_skips_heatmap_when_no_processed(
-        self, top_scorers_csv, agg_by_stage_csv, agg_by_position_csv,
-        team_dim_csv, monkeypatch, tmp_path
+        self,
+        top_scorers_csv,
+        agg_by_stage_csv,
+        agg_by_position_csv,
+        team_dim_csv,
+        monkeypatch,
+        tmp_path,
     ):
         monkeypatch.setattr("src.analysis.viz.EXPORTS_DIR", tmp_path)
         monkeypatch.setattr("src.analysis.viz.DM_BASE", tmp_path)

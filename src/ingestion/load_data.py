@@ -107,7 +107,7 @@ def load_raw(path: str | None = None) -> pd.DataFrame:
                 log.warning("[yellow]%s[/] values coerced to NaN in [cyan]%s[/]", coerced, col)
 
     before = df["match_date"].isna().sum()
-    df["match_date"] = pd.to_datetime(df["match_date"], errors="coerce")
+    df["match_date"] = pd.to_datetime(df["match_date"], errors="coerce", format="mixed")
     after = df["match_date"].isna().sum()
     if after - before:
         log.warning("[yellow]%s[/] dates coerced to NaT", after - before)

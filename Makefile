@@ -1,6 +1,6 @@
 .PHONY: install clean lint format typecheck test run pipeline all cli-all
 
-PYTHON = python
+PYTHON = .venv/bin/python
 PYTHONPATH = .
 
 install:
@@ -14,11 +14,11 @@ clean:
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 
 lint:
-	flake8 src/ tests/ --max-line-length=100 --extend-ignore=E203,W503
+	$(PYTHON) -m flake8 src/ tests/ --max-line-length=100 --extend-ignore=E203,W503
 
 format:
-	black --line-length=100 src/ tests/
-	isort --profile black --line-length=100 src/ tests/
+	$(PYTHON) -m black --line-length=100 src/ tests/
+	$(PYTHON) -m isort --profile black --line-length=100 src/ tests/
 
 typecheck:
 	PYTHONPATH=$(PYTHONPATH) $(PYTHON) -m mypy src/ tests/ --no-error-summary

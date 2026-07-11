@@ -79,3 +79,6 @@ warn_unused_ignores = true
 minversion = "8.0"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
+filterwarnings = [
+    "ignore::PendingDeprecationWarning:seaborn.*",
+]

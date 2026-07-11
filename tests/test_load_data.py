@@ -121,3 +121,10 @@ class TestValidate:
         raw_df.loc[0, "match_result"] = "X"
         n = validate(raw_df)
         assert n > 1
+
+    def test_validate_all_nan_columns_skips_checks(self, raw_df) -> None:
+        raw_df["position"] = float("nan")
+        raw_df["tournament_stage"] = float("nan")
+        raw_df["match_result"] = float("nan")
+        n = validate(raw_df)
+        assert n == 0

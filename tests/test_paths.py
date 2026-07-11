@@ -76,3 +76,18 @@ def test_cli_dot_py_version() -> None:
     )
     assert result.returncode == 0
     assert result.stdout.strip() == "1.0.0"
+
+
+def test_version_fallback_when_package_not_installed() -> None:
+    import subprocess
+    result = subprocess.run(
+        [
+            "python", "-c",
+            "import sys; sys.path.insert(0, '.'); "
+            "import importlib; importlib.invalidate_caches(); "
+            "from src import __version__; print(__version__)",
+        ],
+        capture_output=True, text=True, cwd=PROJECT_ROOT,
+    )
+    assert result.returncode == 0
+    assert result.stdout.strip() == "1.0.0"

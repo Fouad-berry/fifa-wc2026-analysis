@@ -170,6 +170,14 @@ class TestRunPipeline:
         assert "club_name" in result.columns
         assert result["club_name"].iloc[0] == raw_df["club_name"].iloc[0].strip()
 
+    def test_run_pipeline_without_args_loads_from_disk(self, raw_df, tmp_path, monkeypatch):
+        fake_path = tmp_path / "processed" / "test.csv"
+        monkeypatch.setattr("src.transformation.clean_transform.PROCESSED_PATH", fake_path)
+        monkeypatch.setattr("src.transformation.clean_transform.load_raw", lambda: raw_df)
+        result = run_pipeline()
+        assert len(result) == len(raw_df)
+        assert "shot_efficiency" in result.columns
+
 
 class TestEdgeCases:
     def test_unmapped_stage_logs_warning(self, raw_df, caplog):

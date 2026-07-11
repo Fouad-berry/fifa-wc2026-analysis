@@ -167,6 +167,17 @@ class TestRunQueries:
             run_queries(conn)
             mock_console.print.assert_any_call("(empty result)")
 
+    def test_skips_non_select_fragment(self, conn, datamart_csvs, monkeypatch, tmp_path):
+        monkeypatch.setattr("src.analysis.run_sql.TABLES", {})
+        monkeypatch.setattr("src.analysis.run_sql.QUERIES_DIR", tmp_path)
+        sql_file = tmp_path / "mixed.sql"
+        sql_file.write_text("SELECT 1 AS a;\nVALUES (1);\nSELECT 2 AS b;")
+        with patch("src.analysis.run_sql.console") as mock_console:
+            run_queries(conn)
+            printed = [c[0][0] for c in mock_console.print.call_args_list if c[0]]
+            assert "a" in printed
+            assert "b" in printed
+
 
 class TestRunAll:
     def test_run_all_creates_connection_and_loads(

@@ -1,5 +1,4 @@
 import logging
-import warnings
 from unittest.mock import MagicMock, patch
 
 import pandas as pd
@@ -30,12 +29,11 @@ def test_describe_distribution_all_nan() -> None:
 
 def test_describe_distribution_constant() -> None:
     s = pd.Series([5.0, 5.0, 5.0], name="test")
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", RuntimeWarning)
-        result = describe_distribution(s)
+    result = describe_distribution(s)
     assert result["mean"] == 5.0
     assert result["std"] == 0.0
     assert pd.isna(result["skew"])
+    assert pd.isna(result["kurtosis"])
 
 
 @patch("src.analysis.profiling.PROCESSED_PATH")

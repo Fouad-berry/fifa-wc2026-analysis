@@ -19,18 +19,24 @@ def describe_distribution(series: pd.Series) -> dict:
     if len(vals) < 2:
         return {}
 
-    return {
+    std = round(vals.std(), 3)
+    result = {
         "count": len(vals),
         "mean": round(vals.mean(), 3),
-        "std": round(vals.std(), 3),
+        "std": std,
         "min": round(vals.min(), 3),
         "p25": round(vals.quantile(0.25), 3),
         "p50": round(vals.median(), 3),
         "p75": round(vals.quantile(0.75), 3),
         "max": round(vals.max(), 3),
-        "skew": round(stats.skew(vals), 3),
-        "kurtosis": round(stats.kurtosis(vals, fisher=True), 3),
     }
+    if std == 0:
+        result["skew"] = float("nan")
+        result["kurtosis"] = float("nan")
+    else:
+        result["skew"] = round(stats.skew(vals), 3)
+        result["kurtosis"] = round(stats.kurtosis(vals, fisher=True), 3)
+    return result
 
 
 def run_all() -> None:

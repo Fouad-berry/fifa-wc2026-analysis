@@ -215,3 +215,28 @@ class TestRunAll:
         monkeypatch.setattr("src.analysis.run_sql.TABLES", {})
         monkeypatch.setattr("src.analysis.run_sql.QUERIES_DIR", datamart_csvs / "no_sql")
         run_all()
+
+    def test_all_sql_queries_run_without_error(self, monkeypatch) -> None:
+        import duckdb
+        from src.analysis.run_sql import TABLES, QUERIES_DIR, STATEMENT_RE
+
+        missing = [p for p in TABLES.values() if not p.exists()]
+        if missing:
+            pytest.skip(f"Missing datamart files: {missing}")
+
+        conn = duckdb.connect()
+        try:
+            from src.analysis.run_sql import load_tables
+            load_tables(conn)
+            for sql_file in sorted(QUERIES_DIR.glob("*.sql")):
+                sql = sql_file.read_text(encoding="utf-8")
+                for fragment in sql.split(";"):
+                    fragment = fragment.strip()
+                    if not fragment:
+                        continue
+                    clean = __import__("re").sub(r"--.*", "", fragment).strip()
+                    if not clean or not STATEMENT_RE.match(clean):
+                        continue
+                    conn.execute(fragment + ";")
+        finally:
+            conn.close()

@@ -48,7 +48,7 @@ jobs:
         run: python -c "from src.analysis.run_sql import STATEMENT_RE; from src.analysis.metrics import run_all; from src.analysis.viz import run_all as viz_all; from src.analysis.profiling import run_all as profile_all; from src.datamarts.build_datamarts import run_all as dm_all; print('All imports OK')"
 
       - name: Run tests
-        run: pytest --cov=src/ --cov-report=xml
+        run: pytest --cov=src/ --cov-report=xml --cov-fail-under=80
 
       - name: Upload coverage
         uses: codecov/codecov-action@v4

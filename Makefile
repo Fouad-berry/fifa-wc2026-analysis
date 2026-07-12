@@ -1,6 +1,6 @@
 .PHONY: install clean lint format typecheck test run pipeline all cli-all
 
-PYTHON = .venv/bin/python
+PYTHON ?= python3
 PYTHONPATH = .
 
 install:

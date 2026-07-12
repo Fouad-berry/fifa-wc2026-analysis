@@ -12,6 +12,7 @@ import seaborn as sns
 
 from src.logging_config import get_console, setup_logging
 from src.paths import DM_BASE, EXPORTS_DIR, FIGS_DIR, PROCESSED_PATH
+from src.transformation.clean_transform import STAGES
 
 log: logging.Logger = logging.getLogger(__name__)
 sns.set_theme(style="whitegrid")
@@ -137,16 +138,7 @@ def tournament_heatmap(df: pd.DataFrame | None = None) -> None:
         values="player_rating",
         aggfunc="mean",
     )
-    order = [
-        "Group Stage",
-        "Round of 32",
-        "Round of 16",
-        "Quarter Finals",
-        "Semi Finals",
-        "Third Place Match",
-        "Final",
-    ]
-    pivot = pivot.reindex([s for s in order if s in pivot.index])
+    pivot = pivot.reindex([s for s in STAGES if s in pivot.index])
 
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.heatmap(pivot, annot=True, fmt=".2f", cmap="RdYlGn", ax=ax, linewidths=0.5)

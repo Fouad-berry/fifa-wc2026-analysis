@@ -91,6 +91,7 @@ NUMERIC_COLS: list[str] = [
 
 
 def load_raw(path: str | None = None) -> pd.DataFrame:
+    """Load and validate the raw CSV from *path* (or the default RAW_PATH)."""
     if path is None:
         path = str(RAW_PATH)
     log.info("Loading [cyan]%s[/]", path)
@@ -121,6 +122,7 @@ def load_raw(path: str | None = None) -> pd.DataFrame:
 
 
 def validate(df: pd.DataFrame) -> int:
+    """Validate positions, stages, results and null counts.  Returns total issue count."""
     nulls = df.isnull().sum()
     nulls = nulls[nulls > 0]
     if not nulls.empty:

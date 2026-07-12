@@ -26,6 +26,8 @@ STAGE_ORDER: dict[str, int] = {
     "Final": 7,
 }
 
+STAGES: list[str] = list(STAGE_ORDER)
+
 RATING_MIN: int = 0
 RATING_MAX: int = 10
 PCT_MIN: int = 0

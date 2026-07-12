@@ -11,10 +11,10 @@ import pandas as pd
 from src.logging_config import setup_logging
 from src.paths import RAW_PATH
 
-log = logging.getLogger(__name__)
+log: logging.Logger = logging.getLogger(__name__)
 
-VALID_POSITIONS = {"Goalkeeper", "Defender", "Midfielder", "Forward"}
-VALID_STAGES = {
+VALID_POSITIONS: set[str] = {"Goalkeeper", "Defender", "Midfielder", "Forward"}
+VALID_STAGES: set[str] = {
     "Group Stage",
     "Round of 32",
     "Round of 16",
@@ -23,9 +23,9 @@ VALID_STAGES = {
     "Third Place Match",
     "Final",
 }
-VALID_RESULTS = {"W", "L", "D"}
+VALID_RESULTS: set[str] = {"W", "L", "D"}
 
-NUMERIC_COLS = [
+NUMERIC_COLS: list[str] = [
     "age",
     "jersey_number",
     "height_cm",

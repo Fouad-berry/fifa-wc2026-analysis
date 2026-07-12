@@ -1,5 +1,6 @@
 from importlib.metadata import version as _version
 
+__version__: str
 try:
     __version__ = _version("fifa-wc2026-analysis")
 except Exception:

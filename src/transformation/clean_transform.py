@@ -14,9 +14,9 @@ from src.ingestion.load_data import load_raw
 from src.logging_config import setup_logging
 from src.paths import PROCESSED_PATH
 
-log = logging.getLogger(__name__)
+log: logging.Logger = logging.getLogger(__name__)
 
-STAGE_ORDER = {
+STAGE_ORDER: dict[str, int] = {
     "Group Stage": 1,
     "Round of 32": 2,
     "Round of 16": 3,
@@ -26,20 +26,25 @@ STAGE_ORDER = {
     "Final": 7,
 }
 
-RATING_MIN, RATING_MAX = 0, 10
-PCT_MIN, PCT_MAX = 0, 1
-SCORE_MIN, SCORE_MAX = 0, 100
-MINUTES_MIN, MINUTES_MAX = 0, 120
-SPEED_MIN, SPEED_MAX = 0, 40
+RATING_MIN: int = 0
+RATING_MAX: int = 10
+PCT_MIN: int = 0
+PCT_MAX: int = 1
+SCORE_MIN: int = 0
+SCORE_MAX: int = 100
+MINUTES_MIN: int = 0
+MINUTES_MAX: int = 120
+SPEED_MIN: int = 0
+SPEED_MAX: int = 40
 
-AGE_BINS = [0, 20, 24, 28, 32, 40]
-AGE_LABELS = ["U21", "21-24", "25-28", "29-32", "33+"]
+AGE_BINS: list[int] = [0, 20, 24, 28, 32, 40]
+AGE_LABELS: list[str] = ["U21", "21-24", "25-28", "29-32", "33+"]
 
-MV_BINS = [-1, 5e6, 20e6, 60e6, 150e6, 1e9]  # -1 left edge catches zero market values
-MV_LABELS = ["<€5M", "€5-20M", "€20-60M", "€60-150M", "€150M+"]
+MV_BINS: list[float] = [-1, 5e6, 20e6, 60e6, 150e6, 1e9]
+MV_LABELS: list[str] = ["<€5M", "€5-20M", "€20-60M", "€60-150M", "€150M+"]
 
-RTG_BINS = [0, 4, 6, 7.5, 9, 10]
-RTG_LABELS = [
+RTG_BINS: list[float] = [0, 4, 6, 7.5, 9, 10]
+RTG_LABELS: list[str] = [
     "Poor (<4)",
     "Below Avg (4-6)",
     "Good (6-7.5)",
@@ -47,12 +52,16 @@ RTG_LABELS = [
     "World Class (9+)",
 ]
 
-DEF_TACKLE_W, DEF_INTERCEPT_W, DEF_CLEAR_W, DEF_BLOCK_W, DEF_RECOVERY_W = 1.5, 1.5, 1.0, 1.2, 0.8
+DEF_TACKLE_W: float = 1.5
+DEF_INTERCEPT_W: float = 1.5
+DEF_CLEAR_W: float = 1.0
+DEF_BLOCK_W: float = 1.2
+DEF_RECOVERY_W: float = 0.8
 
-KNOCKOUT_THRESHOLD = 2
-FULL_STARTER_MINUTES = 90
+KNOCKOUT_THRESHOLD: int = 2
+FULL_STARTER_MINUTES: int = 90
 
-SCORE_CLIP_COLS = [
+SCORE_CLIP_COLS: list[str] = [
     "performance_score",
     "offensive_contribution",
     "defensive_contribution",

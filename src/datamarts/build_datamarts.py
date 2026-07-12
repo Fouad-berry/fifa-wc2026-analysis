@@ -17,12 +17,13 @@ Each datamart also ships aggregated analytical tables for Looker.
 import logging
 
 import pandas as pd
+from rich.console import Console
 
 from src.logging_config import get_console, get_progress, setup_logging
 from src.paths import DM_BASE, EXPORTS_DIR, PROCESSED_PATH
 
-log = logging.getLogger(__name__)
-console = get_console()
+log: logging.Logger = logging.getLogger(__name__)
+console: Console = get_console()
 
 
 def load_processed() -> pd.DataFrame:
@@ -240,8 +241,8 @@ def build_fact_performance(df: pd.DataFrame) -> pd.DataFrame:
 # ── ANALYTICAL EXPORT TABLES ────────────────────────────────────────────────
 
 
-TOP_SCORERS_LIMIT = 50
-KNOCKOUT_LIMIT = 30
+TOP_SCORERS_LIMIT: int = 50
+KNOCKOUT_LIMIT: int = 30
 
 
 def build_exports(df: pd.DataFrame) -> dict:

@@ -13,7 +13,7 @@ import seaborn as sns
 from src.logging_config import get_console, setup_logging
 from src.paths import DM_BASE, EXPORTS_DIR, FIGS_DIR, PROCESSED_PATH
 
-log = logging.getLogger(__name__)
+log: logging.Logger = logging.getLogger(__name__)
 sns.set_theme(style="whitegrid")
 
 

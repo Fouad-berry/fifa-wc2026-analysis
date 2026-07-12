@@ -8,11 +8,12 @@ import sys
 
 import fire
 import pandas as pd
+from rich.console import Console
 
 from src.logging_config import get_console, setup_logging
 
 setup_logging()
-console = get_console()
+console: Console = get_console()
 
 
 def ingest() -> pd.DataFrame:

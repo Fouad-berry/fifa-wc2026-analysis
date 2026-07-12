@@ -1,16 +1,17 @@
 import logging
 
 import pandas as pd
+from rich.console import Console
 from scipy import stats
 
 from src.logging_config import get_console, setup_logging
 from src.paths import PROCESSED_PATH
 
-log = logging.getLogger(__name__)
-console = get_console()
+log: logging.Logger = logging.getLogger(__name__)
+console: Console = get_console()
 
-SKEW_CUTOFF = 1.0
-KURTOSIS_CUTOFF = 1.0
+SKEW_CUTOFF: float = 1.0
+KURTOSIS_CUTOFF: float = 1.0
 
 
 def describe_distribution(series: pd.Series) -> dict:

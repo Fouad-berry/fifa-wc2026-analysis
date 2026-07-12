@@ -6,16 +6,18 @@ Load datamarts into DuckDB and run SQL queries from sql/queries/.
 
 import logging
 import re
+from pathlib import Path
 
 import duckdb
+from rich.console import Console
 
 from src.logging_config import get_console, setup_logging
 from src.paths import DM_BASE, QUERIES_DIR
 
-log = logging.getLogger(__name__)
-console = get_console()
+log: logging.Logger = logging.getLogger(__name__)
+console: Console = get_console()
 
-TABLES = {
+TABLES: dict[str, Path] = {
     "dim_players": DM_BASE / "dm_players/player_dim.csv",
     "dim_matches": DM_BASE / "dm_matches/match_dim.csv",
     "dim_teams": DM_BASE / "dm_teams/team_dim.csv",
@@ -23,7 +25,7 @@ TABLES = {
     "fact_performance": DM_BASE / "dm_performance/fact_performance.csv",
 }
 
-STATEMENT_RE = re.compile(r"\b(SELECT|WITH)\b", re.IGNORECASE)
+STATEMENT_RE: re.Pattern[str] = re.compile(r"\b(SELECT|WITH)\b", re.IGNORECASE)
 
 
 def load_tables(conn: duckdb.DuckDBPyConnection) -> None:

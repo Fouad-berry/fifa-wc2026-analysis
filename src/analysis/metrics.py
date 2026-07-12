@@ -7,12 +7,13 @@ Top-level KPI summary printed after the pipeline runs.
 import logging
 
 import pandas as pd
+from rich.console import Console
 
 from src.logging_config import get_console, setup_logging
 from src.paths import DM_BASE, PROCESSED_PATH
 
-log = logging.getLogger(__name__)
-console = get_console()
+log: logging.Logger = logging.getLogger(__name__)
+console: Console = get_console()
 
 
 def run_all() -> dict:

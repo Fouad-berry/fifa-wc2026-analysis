@@ -31,6 +31,26 @@ view: dim_stadiums {
     type: average
     sql: ${TABLE}.avg_player_rating ;;
   }
+  measure: avg_top_speed {
+    type: average
+    sql: ${TABLE}.avg_top_speed ;;
+  }
+  measure: avg_distance_covered {
+    type: average
+    sql: ${TABLE}.avg_distance_covered ;;
+  }
+  measure: total_yellow_cards {
+    type: sum
+    sql: ${TABLE}.total_yellow_cards ;;
+  }
+  measure: total_red_cards {
+    type: sum
+    sql: ${TABLE}.total_red_cards ;;
+  }
+  dimension: unique_teams {
+    type: number
+    sql: ${TABLE}.unique_teams ;;
+  }
   measure: count {
     type: count
     drill_fields: [stadium, city]

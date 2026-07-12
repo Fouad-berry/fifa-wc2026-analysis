@@ -1,4 +1,14 @@
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-ast
+      - id: check-json
+      - id: check-yaml
+      - id: debug-statements
+
   - repo: https://github.com/psf/black
     rev: 24.4.2
     hooks:
@@ -16,3 +26,11 @@ repos:
     hooks:
       - id: flake8
         args: [--max-line-length=100, --extend-ignore=E203,W503]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
+        args: [--no-error-summary, --ignore-missing-imports]
+        additional_dependencies: [pandas>=2.2, numpy>=1.26, matplotlib>=3.10, seaborn>=0.13, duckdb>=0.10, scipy>=1.13, rich>=13.7, fire>=0.6]
+        exclude: ^tests/

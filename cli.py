@@ -1,19 +1,12 @@
 """
 cli.py
 ------
-Entry point for the FIFA WC 2026 pipeline.
+Convenience entry point for ``python cli.py <command>``.
 
-Usage:
-    python cli.py pipeline        # Run full pipeline
-    python cli.py ingest          # Load & validate raw data
-    python cli.py transform       # Clean & feature engineer
-    python cli.py datamarts       # Build star-schema datamarts
-    python cli.py metrics         # Print KPI summary
-    python cli.py visualize       # Generate plot figures
-    python cli.py profile         # Statistical profiling
-    python cli.py sql             # Run SQL queries via DuckDB
-    python cli.py all             # Run everything
-    python cli.py --version       # Show version
+Prefer the installed entry point instead::
+
+    pip install -e .
+    fifa-wc2026 pipeline
 """
 
 import sys

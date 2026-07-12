@@ -186,6 +186,7 @@ def build_fact_performance(df: pd.DataFrame) -> pd.DataFrame:
         "expected_assists_xa",
         "key_passes",
         "goal_involvement",
+        "goal_diff",
         "shot_efficiency",
         "total_passes",
         "successful_passes",

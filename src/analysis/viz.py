@@ -45,7 +45,7 @@ def top_scorers_bar(top_n: int = 15) -> None:
             fontsize=9,
         )
     fig.tight_layout()
-    fig.savefig(FIGS_DIR / "top_scorers.png", dpi=150)
+    fig.savefig(FIGS_DIR / "top_scorers.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
     log.info("Saved figures/top_scorers.png")
 
@@ -76,7 +76,7 @@ def goals_by_stage() -> None:
     ax2.set_ylim(0, 10)
 
     fig.tight_layout()
-    fig.savefig(FIGS_DIR / "goals_by_stage.png", dpi=150)
+    fig.savefig(FIGS_DIR / "goals_by_stage.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
     log.info("Saved figures/goals_by_stage.png")
 
@@ -100,7 +100,7 @@ def position_profile() -> None:
         labels=["Rating", "Goals", "Assists", "Def. Index"],
     )
     fig.tight_layout()
-    fig.savefig(FIGS_DIR / "position_profile.png", dpi=150)
+    fig.savefig(FIGS_DIR / "position_profile.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
     log.info("Saved figures/position_profile.png")
 
@@ -119,7 +119,7 @@ def team_goals(top_n: int = 20) -> None:
     ax.set_ylabel("Total Goals")
     ax.tick_params(axis="x", rotation=60)
     fig.tight_layout()
-    fig.savefig(FIGS_DIR / "team_goals.png", dpi=150)
+    fig.savefig(FIGS_DIR / "team_goals.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
     log.info("Saved figures/team_goals.png")
 
@@ -152,7 +152,7 @@ def tournament_heatmap(df: pd.DataFrame | None = None) -> None:
     sns.heatmap(pivot, annot=True, fmt=".2f", cmap="RdYlGn", ax=ax, linewidths=0.5)
     ax.set_title("Avg Player Rating: Stage x Position")
     fig.tight_layout()
-    fig.savefig(FIGS_DIR / "tournament_heatmap.png", dpi=150)
+    fig.savefig(FIGS_DIR / "tournament_heatmap.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
     log.info("Saved figures/tournament_heatmap.png")
 
@@ -189,7 +189,7 @@ def physical_correlation(df: pd.DataFrame | None = None) -> None:
     )
     ax.set_title("Correlation — Physical Stats & Rating")
     fig.tight_layout()
-    fig.savefig(FIGS_DIR / "physical_correlation.png", dpi=150)
+    fig.savefig(FIGS_DIR / "physical_correlation.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
     log.info("Saved figures/physical_correlation.png")
 

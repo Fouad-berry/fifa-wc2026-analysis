@@ -117,7 +117,7 @@ fifa-wc2026-analysis/
 ## Quick Start
 
 ```bash
-git clone https://github.com/<your-username>/fifa-wc2026-analysis.git
+git clone https://github.com/Fouad-berry/fifa-wc2026-analysis.git
 cd fifa-wc2026-analysis
 python -m venv .venv && source .venv/bin/activate
 pip install -e .

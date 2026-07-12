@@ -3,7 +3,7 @@
 
 -- 1. Average stats by position
 SELECT
-    f.position,
+    p.position,
     COUNT(DISTINCT f.player_id)             AS unique_players,
     ROUND(AVG(f.player_rating), 2)          AS avg_rating,
     ROUND(AVG(f.goals), 3)                  AS avg_goals,
@@ -19,7 +19,7 @@ SELECT
     ROUND(AVG(f.stamina_score), 1)          AS avg_stamina
 FROM fact_performance f
 JOIN dim_players p ON f.player_id = p.player_id
-GROUP BY f.position
+GROUP BY p.position
 ORDER BY avg_rating DESC;
 
 -- 2. Best player per position by avg rating

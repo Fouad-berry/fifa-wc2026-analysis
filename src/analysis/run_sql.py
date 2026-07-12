@@ -52,7 +52,7 @@ def run_queries(conn: duckdb.DuckDBPyConnection) -> None:
         console.print(f"\n{'=' * 60}")
         console.print(f"  Query: {sql_file.name}")
         console.print(f"{'=' * 60}")
-        sql = sql_file.read_text()
+        sql = sql_file.read_text(encoding="utf-8")
 
         for fragment in sql.split(";"):
             fragment = fragment.strip()

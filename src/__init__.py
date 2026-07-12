@@ -1,3 +1,5 @@
+"""FIFA World Cup 2026 — Player Performance Analysis package."""
+
 from importlib.metadata import version as _version
 
 __version__: str

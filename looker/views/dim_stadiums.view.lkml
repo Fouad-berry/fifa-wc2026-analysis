@@ -15,36 +15,36 @@ view: dim_stadiums {
     sql: ${TABLE}.city ;;
   }
 
-  measure: matches_hosted {
+  dimension: matches_hosted {
     type: number
     sql: ${TABLE}.matches_hosted ;;
   }
-  measure: total_goals_scored {
-    type: sum
+  dimension: total_goals_scored {
+    type: number
     sql: ${TABLE}.total_goals_scored ;;
   }
-  measure: goals_per_match {
+  dimension: goals_per_match {
     type: number
     sql: ${TABLE}.goals_per_match ;;
   }
-  measure: avg_player_rating {
-    type: average
+  dimension: avg_player_rating {
+    type: number
     sql: ${TABLE}.avg_player_rating ;;
   }
-  measure: avg_top_speed {
-    type: average
+  dimension: avg_top_speed {
+    type: number
     sql: ${TABLE}.avg_top_speed ;;
   }
-  measure: avg_distance_covered {
-    type: average
+  dimension: avg_distance_covered {
+    type: number
     sql: ${TABLE}.avg_distance_covered ;;
   }
-  measure: total_yellow_cards {
-    type: sum
+  dimension: total_yellow_cards {
+    type: number
     sql: ${TABLE}.total_yellow_cards ;;
   }
-  measure: total_red_cards {
-    type: sum
+  dimension: total_red_cards {
+    type: number
     sql: ${TABLE}.total_red_cards ;;
   }
   dimension: unique_teams {

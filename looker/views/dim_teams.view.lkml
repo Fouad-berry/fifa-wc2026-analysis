@@ -51,44 +51,44 @@ view: dim_teams {
     sql: ${TABLE}.losses ;;
   }
 
-  measure: total_goals {
-    type: sum
+  dimension: total_goals {
+    type: number
     sql: ${TABLE}.total_goals ;;
   }
-  measure: total_assists {
-    type: sum
+  dimension: total_assists {
+    type: number
     sql: ${TABLE}.total_assists ;;
   }
-  measure: total_shots {
-    type: sum
+  dimension: total_shots {
+    type: number
     sql: ${TABLE}.total_shots ;;
   }
-  measure: avg_pass_accuracy {
-    type: average
+  dimension: avg_pass_accuracy {
+    type: number
     sql: ${TABLE}.avg_pass_accuracy ;;
   }
-  measure: total_yellow_cards {
-    type: sum
+  dimension: total_yellow_cards {
+    type: number
     sql: ${TABLE}.total_yellow_cards ;;
   }
-  measure: total_red_cards {
-    type: sum
+  dimension: total_red_cards {
+    type: number
     sql: ${TABLE}.total_red_cards ;;
   }
-  measure: avg_player_rating {
-    type: average
+  dimension: avg_player_rating {
+    type: number
     sql: ${TABLE}.avg_player_rating ;;
   }
-  measure: avg_performance_score {
-    type: average
+  dimension: avg_performance_score {
+    type: number
     sql: ${TABLE}.avg_performance_score ;;
   }
-  measure: avg_distance_covered {
-    type: average
+  dimension: avg_distance_covered {
+    type: number
     sql: ${TABLE}.avg_distance_covered ;;
   }
-  measure: avg_top_speed {
-    type: average
+  dimension: avg_top_speed {
+    type: number
     sql: ${TABLE}.avg_top_speed ;;
   }
   measure: win_rate {

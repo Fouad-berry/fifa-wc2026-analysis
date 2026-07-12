@@ -1,3 +1,5 @@
+"""Entry point for ``python -m src``."""
+
 from src.cli_runner import main
 
 if __name__ == "__main__":

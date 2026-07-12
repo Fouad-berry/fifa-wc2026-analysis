@@ -75,8 +75,8 @@ view: dim_players {
     type: sum
     sql: ${TABLE}.player_of_match_awards ;;
   }
-  measure: tournament_rating {
-    type: average
+  dimension: tournament_rating {
+    type: number
     sql: ${TABLE}.tournament_rating ;;
   }
   measure: goal_involvement_tournament {

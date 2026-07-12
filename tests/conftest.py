@@ -1,3 +1,5 @@
+"""Shared test fixtures for the FIFA WC 2026 test suite."""
+
 import numpy as np
 import pandas as pd
 import pytest

@@ -1,3 +1,5 @@
+"""Statistical column profiling for the processed fact table."""
+
 import logging
 
 import pandas as pd

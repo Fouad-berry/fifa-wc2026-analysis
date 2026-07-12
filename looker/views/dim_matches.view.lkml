@@ -35,31 +35,31 @@ view: dim_matches {
     sql: ${TABLE}.stage_order ;;
   }
   dimension: match_month {
-    type: string
+    type: number
     sql: ${TABLE}.match_month ;;
   }
 
-  measure: total_goals_in_match {
-    type: sum
+  dimension: total_goals_in_match {
+    type: number
     sql: ${TABLE}.total_goals_in_match ;;
   }
-  measure: total_shots {
-    type: sum
+  dimension: total_shots {
+    type: number
     sql: ${TABLE}.total_shots ;;
   }
-  measure: total_cards {
-    type: sum
+  dimension: total_cards {
+    type: number
     sql: ${TABLE}.total_cards ;;
   }
-  measure: avg_player_rating {
-    type: average
+  dimension: avg_player_rating {
+    type: number
     sql: ${TABLE}.avg_player_rating ;;
   }
-  measure: avg_distance_covered {
-    type: average
+  dimension: avg_distance_covered {
+    type: number
     sql: ${TABLE}.avg_distance_covered ;;
   }
-  measure: players_in_match {
+  dimension: players_in_match {
     type: number
     sql: ${TABLE}.players_in_match ;;
   }

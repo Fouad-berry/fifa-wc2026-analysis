@@ -17,6 +17,7 @@ console: Console = get_console()
 
 
 def ingest() -> pd.DataFrame:
+    """Load raw CSV and validate columns."""
     from src.ingestion.load_data import load_raw
 
     df = load_raw()
@@ -25,42 +26,49 @@ def ingest() -> pd.DataFrame:
 
 
 def transform() -> None:
+    """Clean data and create engineered features."""
     from src.transformation.clean_transform import run_pipeline
 
     run_pipeline()
 
 
 def datamarts() -> None:
+    """Build star-schema dimension tables and export CSVs."""
     from src.datamarts.build_datamarts import run_all
 
     run_all()
 
 
 def metrics() -> None:
+    """Print top-level KPI summary to console."""
     from src.analysis.metrics import run_all
 
     run_all()
 
 
 def visualize() -> None:
+    """Generate all analysis figures as PNG files."""
     from src.analysis.viz import run_all
 
     run_all()
 
 
 def profile() -> None:
+    """Print statistical profile of every numeric column."""
     from src.analysis.profiling import run_all
 
     run_all()
 
 
 def sql() -> None:
+    """Run all SQL queries from sql/queries/ via DuckDB."""
     from src.analysis.run_sql import run_all
 
     run_all()
 
 
 def pipeline() -> None:
+    """Run ingest → transform → datamarts → metrics."""
     console.rule("[bold cyan]Step 1: Ingest[/]")
     df = ingest()
 

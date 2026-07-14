@@ -8,8 +8,8 @@ try:
 except Exception:
     __version__ = "1.0.0"
 
-from src.logging_config import get_console, setup_logging
-from src.paths import (
+from src.logging_config import get_console, setup_logging  # noqa: E402
+from src.paths import (  # noqa: E402
     DM_BASE,
     EXPORTS_DIR,
     FIGS_DIR,

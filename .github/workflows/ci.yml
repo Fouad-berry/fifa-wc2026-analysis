@@ -38,6 +38,9 @@ jobs:
       - name: Static type checking with mypy
         run: mypy src/ tests/
 
+      - name: Smoke test — installed entry point
+        run: fifa-wc2026 --help
+
       - name: Smoke test — CLI help
         run: python cli.py --help
 

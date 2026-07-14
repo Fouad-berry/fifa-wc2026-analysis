@@ -7,6 +7,8 @@ from rich.progress import BarColumn, Progress, ProgressColumn, SpinnerColumn, Ta
 
 
 class ElapsedColumn(ProgressColumn):
+    """Custom progress column showing elapsed time as HH:MM:SS."""
+
     def render(self, task: Task) -> str:
         if task.elapsed is None:
             return ""
@@ -14,6 +16,7 @@ class ElapsedColumn(ProgressColumn):
 
 
 def setup_logging(level: int = logging.INFO) -> None:
+    """Configure Rich-based logging with tracebacks and markup support."""
     logging.basicConfig(
         level=level,
         format="%(message)s",
@@ -27,6 +30,7 @@ _console: Console | None = None
 
 
 def get_console() -> Console:
+    """Return the singleton Rich console instance."""
     global _console
     if _console is None:
         _console = Console()

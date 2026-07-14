@@ -48,7 +48,7 @@ fifa-wc2026-analysis/
 │       ├── profiling.py                            # Column distribution descriptors
 │       └── run_sql.py                              # DuckDB SQL query runner
 │
-├── cli.py                                          # Fire CLI entry point
+├── cli.py                                          # Convenience entry point
 ├── Makefile                                        # Build automation
 │
 ├── looker/
@@ -124,16 +124,19 @@ pip install -e .
 pip install -e ".[dev]"
 
 # Run full pipeline (all steps)
-python cli.py all
+fifa-wc2026 all
 
 # Or individual steps
-python cli.py pipeline   # ingest → transform → datamarts → metrics
-python cli.py transform
-python cli.py datamarts
-python cli.py metrics
-python cli.py visualize
-python cli.py profile
-python cli.py sql
+fifa-wc2026 pipeline   # ingest → transform → datamarts → metrics
+fifa-wc2026 transform
+fifa-wc2026 datamarts
+fifa-wc2026 metrics
+fifa-wc2026 visualize
+fifa-wc2026 profile
+fifa-wc2026 sql
+
+# (also available via cli.py)
+python cli.py pipeline
 
 # Run tests + lint
 make test

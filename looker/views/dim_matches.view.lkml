@@ -26,6 +26,14 @@ view: dim_matches {
     type: string
     sql: ${TABLE}.match_dow ;;
   }
+  dimension: team_a {
+    type: string
+    sql: ${TABLE}.team_a ;;
+  }
+  dimension: team_b {
+    type: string
+    sql: ${TABLE}.team_b ;;
+  }
   dimension: is_knockout {
     type: yesno
     sql: ${TABLE}.is_knockout ;;

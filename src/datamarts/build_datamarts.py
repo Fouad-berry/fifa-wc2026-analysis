@@ -90,6 +90,15 @@ def build_dim_matches(df: pd.DataFrame) -> pd.DataFrame:
     ]
     dim = df[match_cols].drop_duplicates(subset=["match_id"]).copy()
 
+    teams_per_match = (
+        df.groupby("match_id")["team"]
+        .apply(lambda x: sorted(x.unique()))
+        .reset_index()
+    )
+    teams_per_match["team_a"] = teams_per_match["team"].str[0]
+    teams_per_match["team_b"] = teams_per_match["team"].str[1]
+    dim = dim.merge(teams_per_match[["match_id", "team_a", "team_b"]], on="match_id", how="left")
+
     match_agg = (
         df.groupby("match_id")
         .agg(

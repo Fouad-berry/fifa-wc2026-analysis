@@ -7,7 +7,7 @@
 ### 1. Run the full pipeline
 
 ```bash
-python cli.py pipeline
+fifa-wc2026 pipeline
 ```
 
 ### 2. Upload to Google Drive
